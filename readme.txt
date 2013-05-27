@@ -9,7 +9,10 @@ Tested up to: 3.5.1
 
 == Description ==
 
-100 Cities is a plugin that shows information about cities around the world, to be added when writing posts about those cities. For any given city, it displays information, maps, photos, and related articles captured from several sources, including Google Maps, Wikipedia, Panoramio, and Knok. 100 Cities is developed by Knok, a home exchange website.
+100 Cities is a plugin that shows information about cities around the world, to be added when writing posts about those cities. For any given city, 
+it displays information, maps, photos, and related articles captured from several sources, including Google Maps, Wikipedia, Panoramio, and Knok. 
+
+100 Cities is developed by Knok, a home exchange website.
 
 == Installation ==
 
