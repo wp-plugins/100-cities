@@ -4,6 +4,7 @@ Tags: city, travel, wikipedia, panoramio, feed, rss
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Tested up to: 3.5.1
+Stable tag: 1.0
 
 100 Cities is a plugin that shows information about cities around the world, to be added when writing posts about those cities.
 
@@ -13,6 +14,8 @@ Tested up to: 3.5.1
 it displays information, maps, photos, and related articles captured from several sources, including Google Maps, Wikipedia, Panoramio, and Knok. 
 
 100 Cities is developed by Knok, a home exchange website.
+
+If you have suggestions for a new feature, feel free to email me at jp@knok.com
 
 == Installation ==
 
@@ -32,3 +35,7 @@ it displays information, maps, photos, and related articles captured from severa
 
 = 0.5 =
 * first version of the plugin, beta version.
+
+== Frequently Asked Questions ==
+
+== Upgrade Notice ==
