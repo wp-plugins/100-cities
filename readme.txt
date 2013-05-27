@@ -1,6 +1,8 @@
 === 100 Cities ===
 Contributors: jonaypelluz 
 Tags: city, travel, wikipedia, panoramio, feed, rss
+License: GPLv2
+License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Requires at least: 2.5
 Tested up to: 3.5.1
 Stable tag: 1.0
@@ -25,6 +27,10 @@ If you have suggestions for a new feature, feel free to email me at jonaypelluz@
 5. Also you can use the widget and place it on your widgets areas. You may need to modified the default css to ajust the plugin to those areas.
 6. In the Dashboard you have an admin panel to control values by default.
 7. If you want to use in tags and category listing, you need to add wp_meta() to the sidebar, where you want the plugin to be printed.
+
+== Screenshots ==
+
+1. /assets/screenshot-1.png
 
 == Changelog ==
 
