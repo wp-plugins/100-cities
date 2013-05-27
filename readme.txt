@@ -1,5 +1,5 @@
 === 100 Cities ===
-Contributors: jonaypelluz 
+Contributors: jonaypelluz, knoleskine 
 Tags: city, travel, wikipedia, panoramio, feed, rss
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
