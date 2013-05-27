@@ -30,7 +30,7 @@ If you have suggestions for a new feature, feel free to email me at jonaypelluz@
 
 == Screenshots ==
 
-1. How the plugin looks like on the sidebar
+1. /assets/screenshot-1.png
 
 == Changelog ==
 
