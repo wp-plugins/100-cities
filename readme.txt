@@ -1,4 +1,4 @@
-== 100 Cities ==
+=== Plugin Name ===
 Contributors: jonaypelluz
 Tags: city, travel, wikipedia, panoramio, feed, rss
 License: GPLv2
