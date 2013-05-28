@@ -5,7 +5,7 @@ License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Requires at least: 2.5
 Tested up to: 3.5.1
-Stable tag: 1.0
+Stable tag: 1.0.1
 
 100 Cities is a plugin that shows information about cities around the world, to be added when writing posts about those cities.
 
@@ -31,7 +31,7 @@ If you have suggestions for a new feature, feel free to email me at jonaypelluz@
 
 == Screenshots ==
 
-1. The plugin on the sidebar would look like this
+1. The plugin on the sidebar will look like this
 
 == Changelog ==
 
