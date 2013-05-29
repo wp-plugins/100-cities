@@ -7,7 +7,7 @@ Requires at least: 2.5
 Tested up to: 3.5.1
 Stable tag: 1.0.1
 
-100 Cities is a plugin that shows information about cities around the world, to be added when writing posts about those cities.
+Add great content to your posts automatically: just choose a city, and get a map, photos, data, and related articles. Very useful for travel bloggers!
 
 == Description ==
 
