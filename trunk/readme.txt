@@ -31,9 +31,13 @@ If you have suggestions for a new feature, feel free to email me at jonaypelluz@
 
 == Screenshots ==
 
-1. The plugin on the sidebar will look like this
+1. The plugin will look like this inside a post.
+2. Show the parts you can hide or show.
 
 == Changelog ==
 
 = 1.0 =
 * first version of the plugin, beta version.
+
+= 1.0.1 =
+* changes to the screenshots and readme file
