@@ -31,8 +31,9 @@ If you have suggestions for a new feature, feel free to email me at jonaypelluz@
 
 == Screenshots ==
 
-1. The plugin will look like this inside a post.
+1. With all the sections of the plugin.
 2. Show the parts you can hide or show.
+3. How it looks inside a post.
 
 == Changelog ==
 
