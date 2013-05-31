@@ -1,0 +1,117 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: 100 Cities\n"
+"POT-Creation-Date: 2013-05-23 10:04+0100\n"
+"PO-Revision-Date: 2013-05-23 10:08+0100\n"
+"Last-Translator: Jonay <jonaypelluz@gmail.com>\n"
+"Language-Team: Jonay <jonaypelluz@gmail.com>\n"
+"Language: English\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 1.5.5\n"
+"X-Poedit-KeywordsList: _;gettext;gettext_noop;__;_e\n"
+"X-Poedit-Basepath: .\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\\n;\n"
+"X-Poedit-SearchPath-0: .\n"
+"X-Poedit-SearchPath-1: ..\n"
+
+#: ../100Cities-options.php:71
+msgid "100 Cities Admin Panel"
+msgstr "100 Cities Admin Panel"
+
+#: ../100Cities-options.php:72
+msgid "100 Cities data updated"
+msgstr "100 Cities data updated"
+
+#: ../100Cities-options.php:74
+msgid "Elements to show"
+msgstr "Elements to show (default)"
+
+#: ../100Cities-options.php:75
+msgid "Google map"
+msgstr "Google map"
+
+#: ../100Cities-options.php:76
+msgid "Wikipedia description"
+msgstr "Wikipedia description"
+
+#: ../100Cities-options.php:77
+msgid "Panoramio photos"
+msgstr "Panoramio photos"
+
+#: ../100Cities-options.php:78 ../100Cities.php:258
+msgid "Related posts"
+msgstr "Related posts"
+
+#: ../100Cities-options.php:82
+msgid "Show plugin"
+msgstr "Show plugin on"
+
+#: ../100Cities-options.php:83
+msgid "Dinamic sidebars has to be actived for this to work"
+msgstr "Dinamic sidebars has to be actived for this to work"
+
+#: ../100Cities-options.php:84
+msgid "It needs"
+msgstr "It needs"
+
+#: ../100Cities-options.php:84
+msgid "on the sidebar"
+msgstr "on the sidebar"
+
+#: ../100Cities-options.php:86
+msgid "Tag pages"
+msgstr "Tag pages"
+
+#: ../100Cities-options.php:87
+msgid "Category pages"
+msgstr "Category pages"
+
+#: ../100Cities-options.php:90
+msgid "Add our logo"
+msgstr "Add our logo"
+
+#: ../100Cities-options.php:91
+msgid "Keep our link, Thanks!"
+msgstr "Keep our link, Thanks!"
+
+#: ../100Cities-options.php:93
+msgid "Save Options"
+msgstr "Save Options"
+
+#: ../100Cities.php:259
+msgid "more posts about"
+msgstr "more posts about"
+
+#: ../100Cities.php:277
+msgid "Home exchange"
+msgstr "Home exchange"
+
+#: ../100Cities.php:278
+msgid "Home-link"
+msgstr "http://www.knok.com"
+
+#: ../100Cities.php:358 ../100Cities.php:365
+msgid "Area"
+msgstr "Area"
+
+#: ../100Cities.php:373
+msgid "Population"
+msgstr "Population"
+
+#: ../100Cities.php:377
+msgid "Settled"
+msgstr "Settled"
+
+#: ../templates/100Cities_basic.php:54
+msgid "by"
+msgstr "by"
+
+#: ../templates/100Cities_basic.php:77
+msgid "created by "
+msgstr "created by "
+
+#~ msgid "Related Articles"
+#~ msgstr "Related Articles"

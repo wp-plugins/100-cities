@@ -5,7 +5,7 @@ License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Requires at least: 2.5
 Tested up to: 3.5.1
-Stable tag: 1.0.1
+Stable tag: 1.0.2
 
 Add great content to your posts automatically: just choose a city, and get a map, photos, data, and related articles. Very useful for travel bloggers!
 
@@ -42,3 +42,6 @@ If you have suggestions for a new feature, feel free to email me at jonaypelluz@
 
 = 1.0.1 =
 * changes to the screenshots and readme file
+
+= 1.0.2 =
+* small fix to a function in admin area
