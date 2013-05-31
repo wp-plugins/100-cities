@@ -22,7 +22,7 @@ If you have suggestions for a new feature, feel free to email me at jonaypelluz@
 
 1. Upload "100Cities" folder to the '/wp-content/plugins/' directory
 2. Activate the plugin through the 'Plugins' menu in WordPress
-3. Place "<?php wp_cityinfo('location-name', 'language'); ?>" in your templates. Default language is english, at the moment it is the only language we support.
+3. Place "wp_cityinfo('location-name', 'language');" inside php tags in any of your templates. Default language is english, at the moment it is the only language we support.
 4. Also you can place "[onehundredcities location='location-name' lang='eng/esp/ita' wiki='on/off' gmaps='on/off' panoramio='on/off' articles='on/off' logo='on/off']" in any post or page. If the attribute is on, you don't need to add it, it will use the value by default.
 5. Also you can use the widget and place it on your widgets areas. You may need to modified the default css to ajust the plugin to those areas.
 6. In the Dashboard you have an admin panel to control values by default.
