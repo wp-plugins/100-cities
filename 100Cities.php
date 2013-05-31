@@ -286,7 +286,7 @@
 				$data['tags'] = 0;
 				$data['categories'] = 0;
 				$data['logo'] = 1;
-				update_option('one-hundred-cities-data', json_ncode($data));
+				update_option('one-hundred-cities-data', json_encode($data));
 			}
 			
 			function load_template( $file, $params ) {
