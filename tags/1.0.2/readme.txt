@@ -7,7 +7,7 @@ Requires at least: 2.5
 Tested up to: 3.5.1
 Stable tag: 1.1
 
-Add great content to your posts automatically: just choose a city, and get a map, photos, data, and related articles. Very useful for travel bloggers!
+Add great content to your posts automatically: just choose a city and the plugin will produce the map, photos, data, and related articles for that city. 100 Cities is a great tool for Travel Bloggers!
 
 == Description ==
 
