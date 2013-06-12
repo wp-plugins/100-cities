@@ -68,7 +68,7 @@
 			function __construct(){	
 				
 				$this->plugin_path = dirname(__FILE__);
-				$this->plugin_url = WP_PLUGIN_URL . '/100-Cities';
+				$this->plugin_url = WP_PLUGIN_URL . '/100-cities';
 				
 				if(is_admin()){
 					if(!class_exists("OneHundredCities_Options")) {
