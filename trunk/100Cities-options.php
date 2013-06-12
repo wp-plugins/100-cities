@@ -33,7 +33,16 @@
 				add_action('admin_head', array($this, 'admin_register_head'));
 			}
 			
-			function justNumbers($input) {
+			function check_rss_exists( $url ){
+				$file_headers = @get_headers($url);
+				if($file_headers[0] == 'HTTP/1.1 404 Not Found') {
+					return false;
+				} else {
+					return true;
+				}
+			}
+			
+			function just_numbers($input) {
 				$input = preg_replace("/[^0-9]/","", $input);
 				if($input == '') $input = 0;
 				return $input;
@@ -52,15 +61,45 @@
 				$this->page = $page = add_options_page('100Cities', '100Cities', 'administrator', 'onehundredcities', array($this,'cities_page'));
 			}
 			
+			function is_valid_url($url) {
+				if($this->check_rss_exists($url)){
+					return preg_match('|^http(s)?://[a-z0-9-]+(.[a-z0-9-]+)*(:[0-9]+)?(/.*)?$|i', $url);
+				} else {
+					return false;
+				}
+			}
+			
 			function cities_page() {
 				if ( $_SERVER["REQUEST_METHOD"] == "POST" ){
-					$data['gmaps'] = $this->justNumbers($_POST['gmaps']);
-					$data['wikipedia'] = $this->justNumbers($_POST['wikipedia']);
-					$data['panoramio'] = $this->justNumbers($_POST['panoramio']);
-					$data['articles'] = $this->justNumbers($_POST['articles']);
-					$data['tags'] = $this->justNumbers($_POST['tags']);
-					$data['categories'] = $this->justNumbers($_POST['categories']);
-					$data['logo'] = $this->justNumbers($_POST['logo']);
+					$div_array = array('float','block');
+					$data['gmaps'] = $this->just_numbers($_POST['gmaps']);
+					$data['wikipedia'] = $this->just_numbers($_POST['wikipedia']);
+					$data['panoramio'] = $this->just_numbers($_POST['panoramio']);
+					$data['articles'] = $this->just_numbers($_POST['articles']);
+					
+					//Check it is a real feed
+					$data['articles_feed'] = "";
+					if($this->is_valid_url($_POST['articles_feed'])){
+						$content = file_get_contents($_POST['articles_feed']);
+						try { 
+							$rss = new SimpleXmlElement($content);
+							if(isset($rss->channel->item) && $rss->channel->item->count() > 0){
+								$data['articles_feed'] = $_POST['articles_feed'];
+							}
+						} catch(Exception $e){
+							
+						}					
+					}
+					
+					//Check the value is in array
+					if(in_array($_POST['div'], $div_array)){
+						$data['div'] = $_POST['div'];
+					} else {
+						$data['div'] = 'block';
+					}
+					$data['tags'] = $this->just_numbers($_POST['tags']);
+					$data['categories'] = $this->just_numbers($_POST['categories']);
+					$data['logo'] = $this->just_numbers($_POST['logo']);
 					$data = json_encode($data);
 					update_option('one-hundred-cities-data', $data);
 					$this->data = json_decode(get_option('one-hundred-cities-data'));
@@ -76,6 +115,17 @@
 						<label><input type="checkbox" name="wikipedia" value="1"<?php if($this->data->wikipedia == 1){ ?> checked="checked"<?php } ?> /> <?php _e("Wikipedia description","onehundredcities"); ?></label>
 						<label><input type="checkbox" name="panoramio" value="1"<?php if($this->data->panoramio == 1){ ?> checked="checked"<?php } ?> /> <?php _e("Panoramio photos","onehundredcities"); ?></label>							
 						<label><input type="checkbox" name="articles" value="1"<?php if($this->data->articles == 1){ ?> checked="checked"<?php } ?> /> <?php _e("Related posts","onehundredcities"); ?></label>
+						<label>
+							<?php _e("Related posts feed","onehundredcities"); ?><br />
+							<input class="long_input" type="text" name="articles_feed" value="<?php if(!empty($this->data->articles_feed)){ echo $this->data->articles_feed; } ?>" />
+						</label>
+						<label>
+							<?php _e("Div type","onehundredcities"); ?><br />
+							<select name="div" class="normal_input">
+								<option value="float"<?php if(!empty($this->data->div) && $this->data->div == 'float'){ echo " selected"; }?>>Float</option>
+								<option value="block"<?php if(!empty($this->data->div) && $this->data->div == 'block'){ echo " selected"; }?>>Block</option>
+							</select>
+						</label>
 					</fieldset>
 					<fieldset>
 						<label class="cities-subheader">
@@ -84,7 +134,7 @@
 							<small><?php echo __("It needs","onehundredcities"); ?> <a target="_blank" href="http://codex.wordpress.org/Function_Reference/wp_meta">wp_meta</a> <?php _e("on the sidebar","onehundredcities"); ?></small>
 						</label>
 						<label><input type="checkbox" name="tags" value="1"<?php if($this->data->tags == 1){ ?> checked="checked"<?php } ?> /> <?php _e("Tag pages","onehundredcities"); ?></label>
-						<label><input type="checkbox" name="categories" value="1"<?php if($this->data->categories == 1){ ?> checked="checked"<?php } ?> /> <?php _e("Category pages","onehundredcities"); ?></label>
+						<?php /* ?><label><input type="checkbox" name="categories" value="1"<?php if($this->data->categories == 1){ ?> checked="checked"<?php } ?> /> <?php _e("Category pages","onehundredcities"); ?></label><?php */ ?>
 					</fieldset>
 					<fieldset>
 						<label class="cities-subheader"> <?php _e("Add our logo","onehundredcities"); ?></label>

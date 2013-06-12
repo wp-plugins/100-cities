@@ -17,47 +17,47 @@
 	*/
 ?>
 
-<div class="one-hundred-cities-box cx"<?php if(isset($params['boxwidth'])): ?> style="width:<?php echo $params['boxwidth']; ?>px"<?php endif; ?>>
+<div class="one-hundred-cities-box cx <?php if(isset($params['div']) && $params['div'] == 'float'){ ?> cities-float<?php } else { ?> cities-block<?php } ?>">
 	<?php if(isset($params['map_width'])): ?>
 	<div class="one-hundred-cities-map">	
-		<img src="http://maps.googleapis.com/maps/api/staticmap?center=<?php echo urlencode($params['location']); ?>&zoom=<?php echo $params['zoom']; ?>&size=<?php if(isset($params['boxwidth'])) { echo $params['boxwidth']; } else { echo $params['map_width']; } ?>x200&sensor=false" alt="<?php echo $params['location']; ?>"/>
+		<img src="http://maps.googleapis.com/maps/api/staticmap?center=<?php echo urlencode($params['location']); ?>&zoom=<?php echo $params['zoom']; ?>&size=<?php echo $params['map_width']; ?>x200&sensor=false" alt="<?php echo $params['location']; ?>"/>
 	</div>
 	<?php endif; ?>
 	<?php if(isset($params['wiki'])): ?>
-	<p class="one-hundred-cities-title"><?php echo $params['wiki']['title']; ?></p>
-	<p class="one-hundred-cities-description">
-		<?php echo $params['wiki']['description']; ?>
-		<?php 
-		if(!empty($params['wiki']['extra'])):
-		echo '<br /><br />';
-		foreach($params['wiki']['extra'] as $extra):
-		echo $extra . '<br />'; 
-		endforeach;
-		echo '<br />';
-		endif; 
-		?>
-	</p>
-	<a class="one-hundred-wiki-link" href="<?php echo $params['wiki']['url']; ?>" title="<?php echo $params['wiki']['title']; ?>">Wikipedia</a>	
-	
+	<div class="one-hundred-cities-wiki">
+		<p class="one-hundred-cities-title"><?php echo $params['wiki']['title']; ?></p>
+		<p class="one-hundred-cities-description">
+			<?php echo $params['wiki']['description']; ?>
+			<?php 
+			if(!empty($params['wiki']['extra'])):
+				echo '<br />';
+				foreach($params['wiki']['extra'] as $extra):
+					echo $extra . '<br />'; 
+				endforeach;
+			endif; 
+			?>
+		</p>
+		<a class="one-hundred-wiki-link" href="<?php echo $params['wiki']['url']; ?>" title="<?php echo $params['wiki']['title']; ?>">Wikipedia</a>	
+	</div>
 	<?php endif; ?>
 	
 	<?php if(isset($params['panoramio_photos'])): ?>
 	
-	<div class="one-hundred-cities-photos cx">
+	<ul class="one-hundred-cities-photos cx">
 		<?php 
 			$i = 0;
 			$count = count($params['panoramio_photos'])-1;
 			foreach($params['panoramio_photos'] as $photo): 
 		?>
-		<div class="panoramio-photo<?php if($i == $count){ echo ' no-margin-right'; } ?>">
-			<a target="_blank" href="<?php echo $photo['photo_url']; ?>"><img width="68" src="<?php echo $photo['photo_file_url']; ?>" alt="Panoramio photo by <?php echo $photo['owner_name']; ?>" /></a>
+		<li class="panoramio-photo<?php if($i == $count){ echo ' no-padding-right'; } ?>">
+			<a target="_blank" href="<?php echo $photo['photo_url']; ?>"><img width="60" src="<?php echo $photo['photo_file_url']; ?>" alt="Panoramio photo by <?php echo $photo['owner_name']; ?>" /></a>
 			<a target="_blank" class="panoramio-author" href="<?php echo $photo['owner_url']; ?>"><?php echo __("by","onehundredcities") . " " . $photo['owner_name']; ?></a>
-		</div>
+		</li>
 		<?php 
 			$i++;
 			endforeach;
 		?>
-	</div>
+	</ul>
 	
 	<?php endif; ?>
 	
@@ -65,7 +65,7 @@
 	
 	<div class="one-hundred-cities-link">
 		<p class="one-hundred-link-main-title"><?php echo $params['location_title']; ?></p>
-		<span class="one-hundred-link-more"><a target="_blank" href="<?php echo $params['location_url']; ?>" title="<?php echo $params['location_name']; ?>"><?php echo $params['location_name']; ?></a></span>
+		<span class="one-hundred-link-more"><?php  if($params['location_url'] != "") { ?><a target="_blank" href="<?php echo $params['location_url']; ?>" title="<?php echo $params['location_name']; ?>"><?php echo $params['location_name']; ?></a><?php } ?></span>
 		<span class="one-hundred-link-date"><?php echo $params['location_post']['pubDate']; ?></span>
 		<a class="one-hundred-link-title" target="_blank"  href="<?php echo $params['location_post']['link']; ?>" title="<?php echo $params['location_post']['title']; ?>"><?php echo $params['location_post']['title']; ?></a>
 		<p class="one-hundred-link-desc"><?php echo substr($params['location_post']['description'], 0, 100) . "[...]"; ?></p>

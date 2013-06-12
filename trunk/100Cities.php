@@ -60,8 +60,8 @@
 			protected $basic_template = '100Cities_basic.php';
 			
 			//Change the size of the map depending on the size of the container, and zoom
-			protected $map_width = '300';
-			protected $map_zoom = 9;
+			protected $map_width = '350';
+			protected $map_zoom = 8;
 			
 			//TODO: Allow all default variables to be passed as array.
 			
@@ -89,6 +89,8 @@
 				add_shortcode( 'onehundredcities', array($this, 'insert_cities_template') );
 				
 				//Loading custom CSS
+				wp_register_style('google_font', 'http://fonts.googleapis.com/css?family=Archivo+Narrow');
+				wp_enqueue_style('google_font');
 				wp_enqueue_style('widgets_init', $this->plugin_url . '/assets/100Cities.css');
 				
 			}
@@ -108,7 +110,7 @@
 				echo $this->insert_cities_template( array( 'location' => $this->active_tag ) );
 			}
 			
-			function check_rss_xists( $url ){ 
+			function check_rss_exists( $url ){ 
 				$file_headers = @get_headers($url);
 				if($file_headers[0] == 'HTTP/1.1 404 Not Found') {
 					return false;
@@ -139,8 +141,10 @@
 				return $keep_key_assoc ? $array : array_values($array);
 			}
 			
-			function get_photos_panoramio( $location ){
-				$count = $this->default_panoramio_photos;
+			function get_photos_panoramio( $location, $count ){
+				if($count == false){
+					$count = $this->default_panoramio_photos;
+				}
 				$file_name = "panoramio_" . $count . "_" . strtolower(str_replace(" ","-",$location)) . ".log";
 				$data = $this->get_cache_data($file_name);
 				if(!$data){
@@ -162,12 +166,16 @@
 			}
 			
 			//Get related posts for a given location
-			function get_data_by_location( $location, $lng ){
+			function get_data_by_location( $location, $lng, $custom_feed ){
 				$file_name = "articles_" . strtolower(str_replace(" ","-",$location)) . "_" . $lng . ".log";
 				$data = $this->get_cache_data($file_name);
 				if(!$data){
-					$url = $this->feed_url . str_replace(" ", "-", strtolower($location)) . "/feed/";
-					if($this->check_rss_xists($url)){
+					if(isset($custom_feed) && $custom_feed != false){
+						$url = $custom_feed;
+					} else {
+						$url = $this->feed_url . str_replace(" ", "-", strtolower($location)) . "/feed/";
+					}
+					if($this->check_rss_exists($url)){
 						$doc = new DOMDocument();
 						$doc->load($url);
 						if($doc->getElementsByTagName('item')){
@@ -176,7 +184,7 @@
 								$data['title'] =  $node->getElementsByTagName('title')->item(0)->nodeValue;
 								$data['link'] =  strtok($node->getElementsByTagName('link')->item(0)->nodeValue, "?");
 								$data['pubDate'] =  date("M, d Y", strtotime($node->getElementsByTagName('pubDate')->item(0)->nodeValue));
-								$data['description'] =  utf8_decode(strip_tags($node->getElementsByTagName('description')->item(0)->nodeValue));
+								$data['description'] =  utf8_decode(htmlentities(strip_tags($node->getElementsByTagName('description')->item(0)->nodeValue)));
 								break;
 							}
 							if(!empty($data)){
@@ -190,7 +198,7 @@
 			
 			function get_cache_data($file_name) {
 				$file_url = $this->plugin_path . "/cache/" . $file_name;
-				if (file_exists($file_url) && ((time()-filemtime($file_url)) < (60*60*24*7))){
+				if (file_exists($file_url) && ((time()-filemtime($file_url)) < (60*60*24*2))){
 					$str = file_get_contents($file_url);
 					return unserialize($str);
 				}
@@ -204,6 +212,12 @@
 			}
 			
 			function insert_cities_template( $atts ) {
+				if(!isset($atts['div'])){
+					$atts['div'] = $this->data->div;
+				}
+				if($atts['div'] == 'block'){
+					$atts['map_width'] = '900';
+				}
 				if(isset($atts['wiki']) && $atts['wiki'] == 'off'){ 
 					$atts['wiki'] = 0; //Zero means, It won't get printed
 				} else {
@@ -229,6 +243,10 @@
 				} else {
 					$atts['logo'] = $this->data->logo;
 				}
+				if(!isset($atts['panoramio_count']) || $atts['panoramio_count'] == 0 || $atts['panoramio_count'] == ""){
+					$atts['panoramio_count'] = false;
+				}
+				$atts['articles_feed'] =  $this->data->articles_feed;
 				if(isset($atts['location'])){
 					return $this->get_city_info( $atts );
 				} else {
@@ -238,27 +256,34 @@
 			
 			function get_city_info( $params ){
 				$data['location'] = $params['location'];
+				$data['div'] = $params['div'];
 				if(!isset($params['lng'])){
 					$params['lng'] = $this->default_lang; //Default lang is English
 				}
 				if($params['wiki'] == 1){
 					$data['wiki'] = $this->get_wikipedia_info( $params['lng'], $params['location'] );
 				}
-				if(isset($params['boxwidth']) && $params['boxwidth'] > 0){
-					$data['boxwidth'] = $params['boxwidth'];
-				}
 				if($params['gmaps'] == 1){
-					$data['map_width'] = $this->map_width;
+					if(isset($params['map_width'])){
+						$data['map_width'] = $params['map_width'];
+					} else {
+						$data['map_width'] = $this->map_width;
+					}
 					$data['zoom'] = $this->map_zoom;
 				}
 				if($params['articles'] == 1){
-					$data['location_post'] = $this->get_data_by_location( $params['location'], $params['lng'] );
+					if($params['articles_feed'] != ""){
+						$data['location_url'] = "";
+						$data['location_post'] = $this->get_data_by_location( $params['location'], $params['lng'], $params['articles_feed'] );
+					} else {
+						$data['location_url'] = $this->feed_url . str_replace(" ", "-", strtolower($params['location'])) . "/";
+						$data['location_post'] = $this->get_data_by_location( $params['location'], $params['lng'], false );
+						$data['location_name'] = __("more posts about","onehundredcities") . " " . $params['location'] . " &raquo;";
+					}
 					$data['location_title'] = __("Related posts","onehundredcities");
-					$data['location_name'] = __("more posts about","onehundredcities") . " " . $params['location'] . " &raquo;";
-					$data['location_url'] = "http://www.knok.com/100-cities/tag/" . str_replace(" ", "-", strtolower($params['location'])) . "/";
 				}
 				if($params['panoramio'] == 1){
-					$data['panoramio_photos'] = $this->get_photos_panoramio( $params['location'] );
+					$data['panoramio_photos'] = $this->get_photos_panoramio( $params['location'], $params['panoramio_count']);
 				}
 				if($params['logo'] == 1){
 					$data['logo'] = $this->get_own_info();
@@ -283,9 +308,11 @@
 				$data['wikipedia'] = 1;
 				$data['panoramio'] = 1;
 				$data['articles'] = 1;
+				$data['articles_feed'] = '';
 				$data['tags'] = 0;
 				$data['categories'] = 0;
 				$data['logo'] = 1;
+				$data['div'] = 'float';
 				update_option('one-hundred-cities-data', json_encode($data));
 			}
 			

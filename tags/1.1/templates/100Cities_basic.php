@@ -30,11 +30,10 @@
 			<?php echo $params['wiki']['description']; ?>
 			<?php 
 			if(!empty($params['wiki']['extra'])):
-			echo '<br /><br />';
-			foreach($params['wiki']['extra'] as $extra):
-			echo $extra . '<br />'; 
-			endforeach;
-			echo '<br />';
+				echo '<br />';
+				foreach($params['wiki']['extra'] as $extra):
+					echo $extra . '<br />'; 
+				endforeach;
 			endif; 
 			?>
 		</p>
@@ -44,21 +43,21 @@
 	
 	<?php if(isset($params['panoramio_photos'])): ?>
 	
-	<div class="one-hundred-cities-photos cx">
+	<ul class="one-hundred-cities-photos cx">
 		<?php 
 			$i = 0;
 			$count = count($params['panoramio_photos'])-1;
 			foreach($params['panoramio_photos'] as $photo): 
 		?>
-		<div class="panoramio-photo<?php if($i == $count){ echo ' no-margin-right'; } ?>">
-			<a target="_blank" href="<?php echo $photo['photo_url']; ?>"><img width="68" src="<?php echo $photo['photo_file_url']; ?>" alt="Panoramio photo by <?php echo $photo['owner_name']; ?>" /></a>
+		<li class="panoramio-photo<?php if($i == $count){ echo ' no-padding-right'; } ?>">
+			<a target="_blank" href="<?php echo $photo['photo_url']; ?>"><img width="60" src="<?php echo $photo['photo_file_url']; ?>" alt="Panoramio photo by <?php echo $photo['owner_name']; ?>" /></a>
 			<a target="_blank" class="panoramio-author" href="<?php echo $photo['owner_url']; ?>"><?php echo __("by","onehundredcities") . " " . $photo['owner_name']; ?></a>
-		</div>
+		</li>
 		<?php 
 			$i++;
 			endforeach;
 		?>
-	</div>
+	</ul>
 	
 	<?php endif; ?>
 	

@@ -89,6 +89,8 @@
 				add_shortcode( 'onehundredcities', array($this, 'insert_cities_template') );
 				
 				//Loading custom CSS
+				wp_register_style('google_font', 'http://fonts.googleapis.com/css?family=Archivo+Narrow');
+				wp_enqueue_style('google_font');
 				wp_enqueue_style('widgets_init', $this->plugin_url . '/assets/100Cities.css');
 				
 			}
@@ -139,8 +141,10 @@
 				return $keep_key_assoc ? $array : array_values($array);
 			}
 			
-			function get_photos_panoramio( $location ){
-				$count = $this->default_panoramio_photos;
+			function get_photos_panoramio( $location, $count ){
+				if($count == false){
+					$count = $this->default_panoramio_photos;
+				}
 				$file_name = "panoramio_" . $count . "_" . strtolower(str_replace(" ","-",$location)) . ".log";
 				$data = $this->get_cache_data($file_name);
 				if(!$data){
@@ -239,6 +243,9 @@
 				} else {
 					$atts['logo'] = $this->data->logo;
 				}
+				if(!isset($atts['panoramio_count']) || $atts['panoramio_count'] == 0 || $atts['panoramio_count'] == ""){
+					$atts['panoramio_count'] = false;
+				}
 				$atts['articles_feed'] =  $this->data->articles_feed;
 				if(isset($atts['location'])){
 					return $this->get_city_info( $atts );
@@ -276,7 +283,7 @@
 					$data['location_title'] = __("Related posts","onehundredcities");
 				}
 				if($params['panoramio'] == 1){
-					$data['panoramio_photos'] = $this->get_photos_panoramio( $params['location'] );
+					$data['panoramio_photos'] = $this->get_photos_panoramio( $params['location'], $params['panoramio_count']);
 				}
 				if($params['logo'] == 1){
 					$data['logo'] = $this->get_own_info();
