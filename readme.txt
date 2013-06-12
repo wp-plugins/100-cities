@@ -7,7 +7,7 @@ Requires at least: 2.5
 Tested up to: 3.5.1
 Stable tag: 1.1
 
-Add great content to your posts automatically: just choose a city and the plugin will produce the map, photos, data, and related articles for that city. 100 Cities is a great tool for Travel Bloggers! 
+Add great content to your posts automatically: just choose a city, and get a map, photos, data, and related articles. Very useful for travel bloggers!
 
 == Description ==
 
@@ -23,7 +23,7 @@ If you have suggestions for a new feature, feel free to email me at jonaypelluz@
 1. Upload "100Cities" folder to the '/wp-content/plugins/' directory
 2. Activate the plugin through the 'Plugins' menu in WordPress
 3. Place "wp_cityinfo('location-name', 'language');" inside php tags in any of your templates. Default language is english, at the moment it is the only language we support.
-4. Also you can place "[onehundredcities location='location-name' lang='eng/esp/ita' div='block/float' wiki='on/off' gmaps='on/off' panoramio='on/off' articles='on/off' logo='on/off']" in any post or page. If the attribute is on, you don't need to add it, it will use the value by default.
+4. Also you can place "[onehundredcities location='location-name' lang='eng/esp/ita' panoramio_count='3' div='block/float' wiki='on/off' gmaps='on/off' panoramio='on/off' articles='on/off' logo='on/off']" in any post or page. If the attribute is on, you don't need to add it, it will use the value by default.
 5. Also you can use the widget and place it on your widgets areas. You may need to modified the default css to ajust the plugin to those areas.
 6. In the Dashboard you have an admin panel to control values by default.
 7. If you want to use in tags and category listing, you need to add wp_meta() to the sidebar, where you want the plugin to be printed.
