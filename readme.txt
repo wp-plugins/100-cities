@@ -5,7 +5,7 @@ License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Requires at least: 2.5
 Tested up to: 3.5.1
-Stable tag: 1.1
+Stable tag: 1.2
 
 Add great content to your posts automatically: just choose a city, and get a map, photos, data, and related articles. Very useful for travel bloggers!
 
@@ -54,3 +54,6 @@ The cache last for 2 days, after two days it will read the feed again for that c
 
 = 1.1 =
 * Feed can be modified from the admin area and the plugin inside a post have a new attribute, it can float to one of the sides or occupy 100% of the width of the post.
+
+= 1.2 =
+* Css url fixed, add more regular expression to get info from wikipedia, redesign, add param to control panoramio photo count

@@ -68,7 +68,7 @@
 			function __construct(){	
 				
 				$this->plugin_path = dirname(__FILE__);
-				$this->plugin_url = WP_PLUGIN_URL . '/100Cities';
+				$this->plugin_url = WP_PLUGIN_URL . '/100-Cities';
 				
 				if(is_admin()){
 					if(!class_exists("OneHundredCities_Options")) {
@@ -185,6 +185,7 @@
 								$data['link'] =  strtok($node->getElementsByTagName('link')->item(0)->nodeValue, "?");
 								$data['pubDate'] =  date("M, d Y", strtotime($node->getElementsByTagName('pubDate')->item(0)->nodeValue));
 								$data['description'] =  utf8_decode(htmlentities(strip_tags($node->getElementsByTagName('description')->item(0)->nodeValue)));
+								$data['description'] =  preg_replace('/&a?m?p?;?#8217;/', "'", $data['description']);
 								break;
 							}
 							if(!empty($data)){
@@ -326,15 +327,9 @@
 				return false;
 			}
 			
-			function get_wikipedia_info( $lng, $location ) {
-				$file_name = "wiki_" . strtolower(str_replace(" ","-",$location)) . "_" . $lng . ".log";
-				$data = $this->get_cache_data($file_name);
-				if(!$data){
-					$lng_array = array( 
-						"eng" => "en", 
-						"esp" => "es" 
-					);
-					$url = "http://" . $lng_array[$lng] . ".wikipedia.org/w/api.php?action=query&indexpageids=&prop=revisions&titles=" . urlencode($location) ."&rvprop=content&format=json";
+			function curl_url($url){
+				$data = false;
+				if(function_exists('curl_init')){
 					$ch = curl_init($url);
 					curl_setopt($ch, CURLOPT_HTTPGET, true);
 					curl_setopt($ch, CURLOPT_POST, false);
@@ -346,7 +341,22 @@
 					curl_setopt($ch, CURLOPT_MAXREDIRS, 4);
 					curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 					curl_setopt($ch, CURLOPT_USERAGENT, "Mozilla/5.0 (Windows; U; Windows NT 6.1; he; rv:1.9.2.8) Gecko/20100722 Firefox/3.6.8");
-					$page = json_decode(curl_exec($ch));
+					$data = curl_exec($ch);
+				} else {
+					$data = file_get_contents($url);
+				}
+				return $data;
+			}
+			
+			function get_wikipedia_info( $lng, $location ) {
+				$file_name = "wiki_" . strtolower(str_replace(" ","-",$location)) . "_" . $lng . ".log";
+				$data = $this->get_cache_data($file_name);
+				if(!$data){
+					$lng_array = array( 
+						"eng" => "en", 
+						"esp" => "es" 
+					);
+					$page = json_decode($this->curl_url("http://" . $lng_array[$lng] . ".wikipedia.org/w/api.php?action=query&indexpageids=&prop=revisions&titles=" . urlencode($location) ."&rvprop=content&format=json"));
 					foreach($page->query->pageids as $result){
 						$pageid = $result;
 						break;
@@ -355,8 +365,8 @@
 					$wiki_content = $page->query->pages->$pageid->revisions[0]->$object_name; //We call it unestable, but it it is beyond that :-)
 					$results = array();
 					preg_match_all('/\|(.*)=(.*)\n/', $wiki_content, $results, PREG_SET_ORDER);
-					$searches = array('/\|/','/=/','/(<ref(.*)?>)(.*)?(<\/ref>)/','/(<small(.*)?>)(.*)?(<\/small>)/','/<\/?ref\s?(.*)?\/?>/','/\n/','/\s\s+/');
-					$replacements = array(' ',' = ',' ',' ',' ',' ',' ');
+					$searches = array('/\|/','/=/','/(<ref(.*)?>)(.*)?(<\/ref>)/','/(<small(.*)?>)(.*)?(<\/small>)/','/<\/?ref\s?(.*)?\s?\/?>/','/\n/','/\s\s+/','{{{increase}}}');
+					$replacements = array(' ',' = ',' ',' ',' ',' ',' ','');
 					$array_names = array(
 						 'area_total_sq_mi ='
 						,'area_total_km2 = '
@@ -367,6 +377,8 @@
 						,'2000Pop ='
 						,'area_km2 ='
 						,'population_estimate ='
+						,'area km2 ='
+						,'population ='
 					);
 					$data = array();
 					foreach($results as $param){
@@ -379,28 +391,38 @@
 								if(strlen($param) > 2){
 									switch($i){
 										case 0:
-										case 5:
-											$param = '<b>' . __("Area","onehundredcities") . ':</b> ' . $param . ' sq mi';
-											array_push($data, $param);
-											$area_done = true;
-											break;
 										case 1:
+										case 5:
 										case 7:
+										case 9:
 											if(!isset($area_done)){
-												$param = '<b>' . __("Area","onehundredcities") . ':</b> ' . $param . ' km2';
+												$param = '<b>' . __("Area","onehundredcities") . ':</b> ' . $param;
+												if($i == 0 || $i == 5){
+													$param .= ' sq mi';
+												} else {
+													$param .= ' km2';
+												}
 												array_push($data, $param);
+												$area_done = true;
 											}
 											break;
 										case 2:
 										case 3:
 										case 6:
 										case 8:
-											$param = '<b>' . __("Population","onehundredcities") . ':</b> ' . $param;
-											array_push($data, $param);
+										case 10:
+											if(!isset($population_done)){
+												$param = '<b>' . __("Population","onehundredcities") . ':</b> ' . $param;
+												array_push($data, $param);
+												$population_done = true;
+											}
 											break;
 										case 4:
-											$param = '<b>' . __("Settled","onehundredcities") . ':</b> ' . $param;
-											array_push($data, $param);
+											if(!isset($settled_done)){
+												$param = '<b>' . __("Settled","onehundredcities") . ':</b> ' . $param;
+												array_push($data, $param);
+												$settled_done = true;
+											}
 											break;
 									}
 								}
@@ -408,19 +430,7 @@
 							$i++;
 						}
 					}
-					$main_url = "http://" . $lng_array[$lng] . ".wikipedia.org/w/api.php?action=opensearch&search=" . urlencode($location) ."&format=xml&limit=1";
-					$cht = curl_init($main_url);
-					curl_setopt($cht, CURLOPT_HTTPGET, true);
-					curl_setopt($cht, CURLOPT_POST, false);
-					curl_setopt($cht, CURLOPT_HEADER, false);
-					curl_setopt($cht, CURLOPT_NOBODY, false);
-					curl_setopt($cht, CURLOPT_VERBOSE, false);
-					curl_setopt($cht, CURLOPT_REFERER, "");
-					curl_setopt($cht, CURLOPT_FOLLOWLOCATION, true);
-					curl_setopt($cht, CURLOPT_MAXREDIRS, 4);
-					curl_setopt($cht, CURLOPT_RETURNTRANSFER, true);
-					curl_setopt($cht, CURLOPT_USERAGENT, "Mozilla/5.0 (Windows; U; Windows NT 6.1; he; rv:1.9.2.8) Gecko/20100722 Firefox/3.6.8");
-					$new_page = curl_exec($cht);
+					$new_page = $this->curl_url("http://" . $lng_array[$lng] . ".wikipedia.org/w/api.php?action=opensearch&search=" . urlencode($location) ."&format=xml&limit=1");
 					$xml = simplexml_load_string($new_page);
 					$description = (string) preg_replace('/\([^)]*\)/s', '', $xml->Section->Item->Description);
 					$description = preg_replace('/\s\s+/s', ' ', $description);
