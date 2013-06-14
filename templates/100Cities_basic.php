@@ -51,7 +51,15 @@
 		?>
 		<li class="panoramio-photo<?php if($i == $count){ echo ' no-padding-right'; } ?>">
 			<a target="_blank" href="<?php echo $photo['photo_url']; ?>"><img width="60" src="<?php echo $photo['photo_file_url']; ?>" alt="Panoramio photo by <?php echo $photo['owner_name']; ?>" /></a>
-			<a target="_blank" class="panoramio-author" href="<?php echo $photo['owner_url']; ?>"><?php echo __("by","onehundredcities") . " " . $photo['owner_name']; ?></a>
+			<?php 
+				if(strlen($photo['owner_name']) > 10){
+					$owner_name = substr($photo['owner_name'], 0, 10) . '...';
+				} else {
+					$owner_name = $photo['owner_name'];
+				}
+			
+			?>
+			<a target="_blank" class="panoramio-author" href="<?php echo $photo['owner_url']; ?>"><?php echo __("by","onehundredcities") . " " . $owner_name; ?></a>
 		</li>
 		<?php 
 			$i++;
