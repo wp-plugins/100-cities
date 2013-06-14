@@ -91,7 +91,11 @@
 				//Loading custom CSS
 				wp_register_style('google_font', 'http://fonts.googleapis.com/css?family=Archivo+Narrow');
 				wp_enqueue_style('google_font');
-				wp_enqueue_style('widgets_init', $this->plugin_url . '/assets/100Cities.css');
+				if($this->data->css != 1){
+					wp_enqueue_style('widgets_init', $this->plugin_url . '/assets/100Cities.css');
+				} else {
+					wp_enqueue_style('widgets_init', $this->plugin_url . '/assets/default-100Cities.css');
+				}
 				
 			}
 			
@@ -244,8 +248,14 @@
 				} else {
 					$atts['logo'] = $this->data->logo;
 				}
-				if(!isset($atts['panoramio_count']) || $atts['panoramio_count'] == 0 || $atts['panoramio_count'] == ""){
-					$atts['panoramio_count'] = false;
+				if(!isset($atts['mapzoom'])){
+					$atts['mapzoom'] = $this->map_zoom;
+				}
+				if(!isset($atts['panoramiocount']) || $atts['panoramiocount'] == 0 || $atts['panoramiocount'] == ""){
+					$atts['panoramiocount'] = false;
+				}
+				if(!isset($atts['lang'])){
+					$atts['lang'] = $this->default_lang; //Default lang is English
 				}
 				$atts['articles_feed'] =  $this->data->articles_feed;
 				if(isset($atts['location'])){
@@ -258,11 +268,8 @@
 			function get_city_info( $params ){
 				$data['location'] = $params['location'];
 				$data['div'] = $params['div'];
-				if(!isset($params['lng'])){
-					$params['lng'] = $this->default_lang; //Default lang is English
-				}
 				if($params['wiki'] == 1){
-					$data['wiki'] = $this->get_wikipedia_info( $params['lng'], $params['location'] );
+					$data['wiki'] = $this->get_wikipedia_info( $params['lang'], $params['location'] );
 				}
 				if($params['gmaps'] == 1){
 					if(isset($params['map_width'])){
@@ -270,21 +277,21 @@
 					} else {
 						$data['map_width'] = $this->map_width;
 					}
-					$data['zoom'] = $this->map_zoom;
+					$data['zoom'] = $params['mapzoom'];
 				}
 				if($params['articles'] == 1){
 					if($params['articles_feed'] != ""){
 						$data['location_url'] = "";
-						$data['location_post'] = $this->get_data_by_location( $params['location'], $params['lng'], $params['articles_feed'] );
+						$data['location_post'] = $this->get_data_by_location( $params['location'], $params['lang'], $params['articles_feed'] );
 					} else {
 						$data['location_url'] = $this->feed_url . str_replace(" ", "-", strtolower($params['location'])) . "/";
-						$data['location_post'] = $this->get_data_by_location( $params['location'], $params['lng'], false );
+						$data['location_post'] = $this->get_data_by_location( $params['location'], $params['lang'], false );
 						$data['location_name'] = __("more posts about","onehundredcities") . " " . $params['location'] . " &raquo;";
 					}
 					$data['location_title'] = __("Related posts","onehundredcities");
 				}
 				if($params['panoramio'] == 1){
-					$data['panoramio_photos'] = $this->get_photos_panoramio( $params['location'], $params['panoramio_count']);
+					$data['panoramio_photos'] = $this->get_photos_panoramio( $params['location'], $params['panoramiocount']);
 				}
 				if($params['logo'] == 1){
 					$data['logo'] = $this->get_own_info();
@@ -314,6 +321,7 @@
 				$data['categories'] = 0;
 				$data['logo'] = 1;
 				$data['div'] = 'float';
+				$data['css'] = 1;
 				update_option('one-hundred-cities-data', json_encode($data));
 			}
 			
@@ -363,73 +371,105 @@
 					}
 					$object_name = '*';
 					$wiki_content = $page->query->pages->$pageid->revisions[0]->$object_name; //We call it unestable, but it it is beyond that :-)
+					
+					//Cleaning wiki content
 					$results = array();
-					preg_match_all('/\|(.*)=(.*)\n/', $wiki_content, $results, PREG_SET_ORDER);
-					$searches = array('/\|/','/=/','/(<ref(.*)?>)(.*)?(<\/ref>)/','/(<small(.*)?>)(.*)?(<\/small>)/','/<\/?ref\s?(.*)?\s?\/?>/','/\n/','/\s\s+/','{{{increase}}}');
-					$replacements = array(' ',' = ',' ',' ',' ',' ',' ','');
-					$array_names = array(
-						 'area_total_sq_mi ='
-						,'area_total_km2 = '
-						,'population_est ='
-						,'population_total ='
-						,'established_date ='
-						,'TotalAreaUS ='
-						,'2000Pop ='
-						,'area_km2 ='
-						,'population_estimate ='
-						,'area km2 ='
-						,'population ='
+					$searches = array(
+						'/<ref(.*)?>(.*)?<\/ref>/'
+						,'/<small(.*)?>(.*)?<\/small>/'
+						,'/<\/?ref\s?(.*)?\s?\/?>/'
+						,'/\((.*)\)/'
+						,'/{(.*)}/'
+						,'/\[(.*)\]/'
+						,'/<!--(.*)-->/'
 					);
-					$data = array();
-					foreach($results as $param){
-						$param = trim(preg_replace($searches, $replacements, $param[0]));
-						$i = 0;
-						foreach($array_names as $nm){
-							$pos = strpos($param, $nm);
-							if($pos !== false){
-								$param = trim(str_replace($array_names[$i], "", $param));
-								if(strlen($param) > 2){
-									switch($i){
-										case 0:
-										case 1:
-										case 5:
-										case 7:
-										case 9:
-											if(!isset($area_done)){
-												$param = '<b>' . __("Area","onehundredcities") . ':</b> ' . $param;
-												if($i == 0 || $i == 5){
-													$param .= ' sq mi';
-												} else {
-													$param .= ' km2';
-												}
-												array_push($data, $param);
-												$area_done = true;
-											}
-											break;
-										case 2:
-										case 3:
-										case 6:
-										case 8:
-										case 10:
-											if(!isset($population_done)){
-												$param = '<b>' . __("Population","onehundredcities") . ':</b> ' . $param;
-												array_push($data, $param);
-												$population_done = true;
-											}
-											break;
-										case 4:
-											if(!isset($settled_done)){
-												$param = '<b>' . __("Settled","onehundredcities") . ':</b> ' . $param;
-												array_push($data, $param);
-												$settled_done = true;
-											}
-											break;
-									}
-								}
+					$wiki_content = preg_replace($searches, ' ' ,$wiki_content);
+					preg_match_all('/\|(.*)=(.*)/', $wiki_content, $results, PREG_SET_ORDER);
+					
+					//Filtering cleaner results
+					$results_filtered = array();
+					foreach($results as $result){
+						if(substr_count($result[0],'|') > 1){
+							$rs = explode('|',$result[0]);
+							foreach($rs as $rs_s){
+								array_push($results_filtered, $rs_s);
 							}
-							$i++;
+						} else {
+							array_push($results_filtered, $result[0]);							
 						}
 					}
+					
+					//Final string cleaning, it is when we get the data from wikipedia
+					$searches = array('/=/','/\|/','/\n/','/\s\s+/');
+					$replacements = array(' = ',' ',' ',' ');
+					
+					//English wikipedia
+					$array_names['eng'] = array(
+						 'area_total_sq_mi =' => 'area'
+						,'area_total_km2 = ' => 'area'
+						,'population_est =' => 'population'
+						,'population_total =' => 'population'
+						,'established_date =' => 'settled'
+						,'TotalAreaUS =' => 'area'
+						,'2000Pop =' => 'population'
+						,'area_km2 =' => 'area'
+						,'population_estimate =' => 'population'
+						,'area km2 =' => 'area'
+						,'population =' => 'population'
+						,'2010Pop =' => 'population'
+					);
+					
+					//Spanish wikipedia
+					$array_names['esp'] = array(
+						 'superficie =' => 'area'
+						,'población =' => 'population'
+					);
+					
+					$data = array();
+					foreach($results_filtered as $param){
+						if(strlen($param) < 200 &&  strpos($param, "=") && $param != ""){
+							$param = trim(preg_replace($searches, $replacements, $param));	
+							$i = 0;
+							foreach($array_names[$lng] as $nm => $val){
+								$pos = strpos($param, $nm);
+								if($pos !== false){
+									$param = trim(str_replace($nm, "", substr($param, $pos, strlen($param))));
+									if(strlen($param) > 2){
+										switch($val){
+											case 'area':
+												if(!isset($area_done)){
+													$param = '<b>' . __("Area","onehundredcities") . ':</b> ' . $param;
+													if(($i == 0 || $i == 5) && $lng == 'eng'){
+														$param .= ' sq mi';
+													} else {
+														$param .= ' km2';
+													}
+													array_push($data, $param);
+													$area_done = true;
+												}
+												break;
+											case 'population':
+												if(!isset($population_done)){
+													$param = '<b>' . __("Population","onehundredcities") . ':</b> ' . $param;
+													array_push($data, $param);
+													$population_done = true;
+												}
+												break;
+											case 'settled':
+												if(!isset($settled_done)){
+													$param = '<b>' . __("Settled","onehundredcities") . ':</b> ' . $param;
+													array_push($data, $param);
+													$settled_done = true;
+												}
+												break;
+										}
+									}
+								}
+								$i++;
+							}
+						}
+					}
+					
 					$new_page = $this->curl_url("http://" . $lng_array[$lng] . ".wikipedia.org/w/api.php?action=opensearch&search=" . urlencode($location) ."&format=xml&limit=1");
 					$xml = simplexml_load_string($new_page);
 					$description = (string) preg_replace('/\([^)]*\)/s', '', $xml->Section->Item->Description);
@@ -460,7 +500,7 @@
 			$OneHundredCities = new OneHundredCities();	
 		}
 		$data['location'] = $location;
-		$data['lng'] = $lng;
+		$data['lang'] = $lng;
 		echo $OneHundredCities->insert_cities_template( $data );
 	}
 	

@@ -17,7 +17,7 @@
 	*/
 ?>
 
-<div class="one-hundred-cities-box cx <?php if(isset($params['div']) && $params['div'] == 'float'){ ?> cities-float<?php } else { ?> cities-block<?php } ?>">
+<div class="one-hundred-cities-box cities-clx <?php if(isset($params['div']) && $params['div'] == 'float'){ ?> cities-float<?php } else { ?> cities-block<?php } ?>">
 	<?php if(isset($params['map_width'])): ?>
 	<div class="one-hundred-cities-map">	
 		<img src="http://maps.googleapis.com/maps/api/staticmap?center=<?php echo urlencode($params['location']); ?>&zoom=<?php echo $params['zoom']; ?>&size=<?php echo $params['map_width']; ?>x200&sensor=false" alt="<?php echo $params['location']; ?>"/>
@@ -43,7 +43,7 @@
 	
 	<?php if(isset($params['panoramio_photos'])): ?>
 	
-	<ul class="one-hundred-cities-photos cx">
+	<ul class="one-hundred-cities-photos cities-clx">
 		<?php 
 			$i = 0;
 			$count = count($params['panoramio_photos'])-1;
@@ -51,7 +51,15 @@
 		?>
 		<li class="panoramio-photo<?php if($i == $count){ echo ' no-padding-right'; } ?>">
 			<a target="_blank" href="<?php echo $photo['photo_url']; ?>"><img width="60" src="<?php echo $photo['photo_file_url']; ?>" alt="Panoramio photo by <?php echo $photo['owner_name']; ?>" /></a>
-			<a target="_blank" class="panoramio-author" href="<?php echo $photo['owner_url']; ?>"><?php echo __("by","onehundredcities") . " " . $photo['owner_name']; ?></a>
+			<?php 
+				if(strlen($photo['owner_name']) > 10){
+					$owner_name = substr($photo['owner_name'], 0, 10) . '...';
+				} else {
+					$owner_name = $photo['owner_name'];
+				}
+			
+			?>
+			<a target="_blank" class="panoramio-author" href="<?php echo $photo['owner_url']; ?>"><?php echo __("by","onehundredcities") . " " . $owner_name; ?></a>
 		</li>
 		<?php 
 			$i++;

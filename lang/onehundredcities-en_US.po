@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: 100 Cities\n"
-"POT-Creation-Date: 2013-05-23 10:04+0100\n"
-"PO-Revision-Date: 2013-05-23 10:08+0100\n"
+"POT-Creation-Date: 2013-06-13 11:43+0100\n"
+"PO-Revision-Date: 2013-06-13 11:53+0100\n"
 "Last-Translator: Jonay <jonaypelluz@gmail.com>\n"
 "Language-Team: Jonay <jonaypelluz@gmail.com>\n"
 "Language: English\n"
@@ -17,101 +17,120 @@ msgstr ""
 "X-Poedit-SearchPath-0: .\n"
 "X-Poedit-SearchPath-1: ..\n"
 
-#: ../100Cities-options.php:71
+#: ../100Cities-options.php:122
 msgid "100 Cities Admin Panel"
 msgstr "100 Cities Admin Panel"
 
-#: ../100Cities-options.php:72
+#: ../100Cities-options.php:123
 msgid "100 Cities data updated"
 msgstr "100 Cities data updated"
 
-#: ../100Cities-options.php:74
+#: ../100Cities-options.php:125
 msgid "Elements to show"
 msgstr "Elements to show (default)"
 
-#: ../100Cities-options.php:75
+#: ../100Cities-options.php:126
 msgid "Google map"
 msgstr "Google map"
 
-#: ../100Cities-options.php:76
+#: ../100Cities-options.php:127
 msgid "Wikipedia description"
 msgstr "Wikipedia description"
 
-#: ../100Cities-options.php:77
+#: ../100Cities-options.php:128
 msgid "Panoramio photos"
 msgstr "Panoramio photos"
 
-#: ../100Cities-options.php:78 ../100Cities.php:258
+#: ../100Cities-options.php:129 ../100Cities.php:287
 msgid "Related posts"
 msgstr "Related posts"
 
-#: ../100Cities-options.php:82
+#: ../100Cities-options.php:131
+msgid "Related posts feed"
+msgstr "Related posts custom feed url (rss)"
+
+#: ../100Cities-options.php:135
+msgid "Div type"
+msgstr ""
+"Div type <br /><small>(extend to the full width of the container of the "
+"article area or float to one side and it gets wrap by text)</small>"
+
+#: ../100Cities-options.php:143
+msgid "Use default CSS"
+msgstr "Use default CSS"
+
+#: ../100Cities-options.php:144
+msgid "Edit CSS"
+msgstr ""
+"Edit CSS <br /><small>(DO NOT modify if you don't know CSS or it can cause "
+"they whole blog to stop working properly)</small>"
+
+#: ../100Cities-options.php:149
 msgid "Show plugin"
 msgstr "Show plugin on"
 
-#: ../100Cities-options.php:83
+#: ../100Cities-options.php:150
 msgid "Dinamic sidebars has to be actived for this to work"
 msgstr "Dinamic sidebars has to be actived for this to work"
 
-#: ../100Cities-options.php:84
+#: ../100Cities-options.php:151
 msgid "It needs"
 msgstr "It needs"
 
-#: ../100Cities-options.php:84
+#: ../100Cities-options.php:151
 msgid "on the sidebar"
 msgstr "on the sidebar"
 
-#: ../100Cities-options.php:86
+#: ../100Cities-options.php:153
 msgid "Tag pages"
 msgstr "Tag pages"
 
-#: ../100Cities-options.php:87
-msgid "Category pages"
-msgstr "Category pages"
-
-#: ../100Cities-options.php:90
+#: ../100Cities-options.php:157
 msgid "Add our logo"
 msgstr "Add our logo"
 
-#: ../100Cities-options.php:91
+#: ../100Cities-options.php:158
 msgid "Keep our link, Thanks!"
 msgstr "Keep our link, Thanks!"
 
-#: ../100Cities-options.php:93
+#: ../100Cities-options.php:160
 msgid "Save Options"
 msgstr "Save Options"
 
-#: ../100Cities.php:259
+#: ../100Cities.php:285
 msgid "more posts about"
 msgstr "more posts about"
 
-#: ../100Cities.php:277
+#: ../100Cities.php:304
 msgid "Home exchange"
 msgstr "Home exchange"
 
-#: ../100Cities.php:278
+#: ../100Cities.php:305
 msgid "Home-link"
 msgstr "http://www.knok.com"
 
-#: ../100Cities.php:358 ../100Cities.php:365
+#: ../100Cities.php:432
 msgid "Area"
 msgstr "Area"
 
-#: ../100Cities.php:373
+#: ../100Cities.php:449
 msgid "Population"
 msgstr "Population"
 
-#: ../100Cities.php:377
+#: ../100Cities.php:456
 msgid "Settled"
 msgstr "Settled"
 
-#: ../templates/100Cities_basic.php:54
+#: ../templates/100Cities_basic.php:62
 msgid "by"
 msgstr "by"
 
-#: ../templates/100Cities_basic.php:77
+#: ../templates/100Cities_basic.php:85
 msgid "created by "
 msgstr "created by "
+
+#~ msgid "Category pages"
+#~ msgstr "Category pages"
 
 #~ msgid "Related Articles"
 #~ msgstr "Related Articles"

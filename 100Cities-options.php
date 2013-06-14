@@ -76,6 +76,18 @@
 					$data['wikipedia'] = $this->just_numbers($_POST['wikipedia']);
 					$data['panoramio'] = $this->just_numbers($_POST['panoramio']);
 					$data['articles'] = $this->just_numbers($_POST['articles']);
+					$data['css'] = $this->just_numbers($_POST['defaultcss']);
+					
+					//Check for weird javascript POST params, it doesn't go into the database so... the user has to know what it is writing in it
+					if($data['css'] != 1){
+						$new_css = preg_replace('/<script\b[^>]*>(.*?)<\/script>/is', '', str_replace('\\','', $_POST['css']));
+						$css_url = dirname(__FILE__) . '/assets/100Cities.css';
+						
+						//rewrites css file
+						$fp = fopen($css_url, 'w');
+						fwrite($fp, $new_css);
+						fclose($fp);
+					}
 					
 					//Check it is a real feed
 					$data['articles_feed'] = "";
@@ -109,7 +121,7 @@
 				<form class="cities-form" method="post" action="<?php echo $_SERVER['REQUEST_URI']; ?>">
 					<h1 class="cities-header"><span id="icon-tools" class="icon32"></span><?php _e("100 Cities Admin Panel","onehundredcities"); ?></h1>
 					<?php if(isset($updated)){ ?><div class="cities-alert"><?php _e("100 Cities data updated","onehundredcities"); ?></div><?php } ?>
-					<fieldset>
+					<fieldset class="cities-first-fieldset">
 						<label class="cities-subheader"><?php echo _("Elements to show"); ?>:</label>
 						<label><input type="checkbox" name="gmaps" value="1"<?php if($this->data->gmaps == 1){ ?> checked="checked"<?php } ?> /> <?php _e("Google map","onehundredcities"); ?></label> 
 						<label><input type="checkbox" name="wikipedia" value="1"<?php if($this->data->wikipedia == 1){ ?> checked="checked"<?php } ?> /> <?php _e("Wikipedia description","onehundredcities"); ?></label>
@@ -126,6 +138,11 @@
 								<option value="block"<?php if(!empty($this->data->div) && $this->data->div == 'block'){ echo " selected"; }?>>Block</option>
 							</select>
 						</label>
+					</fieldset>
+					<fieldset class="cities-right-css">
+						<label><input type="checkbox" name="defaultcss" value="1"<?php if($this->data->css == 1){ ?> checked="checked"<?php } ?> /> <?php _e("Use default CSS","onehundredcities"); ?></label>
+						<?php _e("Edit CSS","onehundredcities"); ?><br />
+						<textarea name="css"><?php echo trim(file_get_contents( WP_PLUGIN_URL . '/100-cities/assets/100Cities.css')); ?></textarea>
 					</fieldset>
 					<fieldset>
 						<label class="cities-subheader">
