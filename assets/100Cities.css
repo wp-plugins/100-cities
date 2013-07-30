@@ -49,6 +49,7 @@ html[xmlns] .cities-clx {
 
 .one-hundred-cities-map {
     margin-bottom: 5px;
+    overflow:hidden;
 }
 
 .one-hundred-cities-title, .post p.one-hundred-cities-title {

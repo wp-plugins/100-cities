@@ -76,6 +76,7 @@
 					$data['wikipedia'] = $this->just_numbers($_POST['wikipedia']);
 					$data['panoramio'] = $this->just_numbers($_POST['panoramio']);
 					$data['articles'] = $this->just_numbers($_POST['articles']);
+					$data['weather'] = $this->just_numbers($_POST['weather']);
 					$data['css'] = $this->just_numbers($_POST['defaultcss']);
 					
 					//Check for weird javascript POST params, it doesn't go into the database so... the user has to know what it is writing in it
@@ -126,7 +127,8 @@
 						<label><input type="checkbox" name="gmaps" value="1"<?php if($this->data->gmaps == 1){ ?> checked="checked"<?php } ?> /> <?php _e("Google map","onehundredcities"); ?></label> 
 						<label><input type="checkbox" name="wikipedia" value="1"<?php if($this->data->wikipedia == 1){ ?> checked="checked"<?php } ?> /> <?php _e("Wikipedia description","onehundredcities"); ?></label>
 						<label><input type="checkbox" name="panoramio" value="1"<?php if($this->data->panoramio == 1){ ?> checked="checked"<?php } ?> /> <?php _e("Panoramio photos","onehundredcities"); ?></label>							
-						<label><input type="checkbox" name="articles" value="1"<?php if($this->data->articles == 1){ ?> checked="checked"<?php } ?> /> <?php _e("Related posts","onehundredcities"); ?></label>
+						<label><input type="checkbox" name="articles" value="1"<?php if($this->data->articles == 1){ ?> checked="checked"<?php } ?> /> <?php _e("Related posts","onehundredcities"); ?></label>							
+						<label><input type="checkbox" name="weather" value="1"<?php if($this->data->weather == 1){ ?> checked="checked"<?php } ?> /> <?php _e("Weather info","onehundredcities"); ?></label>
 						<label>
 							<?php _e("Related posts feed","onehundredcities"); ?><br />
 							<input class="long_input" type="text" name="articles_feed" value="<?php if(!empty($this->data->articles_feed)){ echo $this->data->articles_feed; } ?>" />

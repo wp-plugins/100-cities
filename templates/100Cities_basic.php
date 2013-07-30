@@ -34,7 +34,25 @@
 				foreach($params['wiki']['extra'] as $extra):
 					echo $extra . '<br />'; 
 				endforeach;
-			endif; 
+			else:
+				echo '<br />'; 
+			endif;
+			if(!empty($params['weather'])):
+				$weather_text = "<b>" . __("Weather","onehundredcities") . "</b>:";
+				if(!empty($params['weather']['temperature'])){
+					$weather_text .= " " . $params['weather']['temperature'];
+				}
+				if(!empty($params['weather']['wind-speed'])){
+					$weather_text .= ", " . __("Wind at","onehundredcities") . " " . $params['weather']['wind-speed'];
+				}
+				if(!empty($params['weather']['humidity'])){
+					$weather_text .= ", " . $params['weather']['humidity'];
+				}
+				if(!empty($params['weather']['weather-desc'])){
+					$weather_text .= ", '" . $params['weather']['weather-desc'] . "'";
+				}
+				echo $weather_text. "<br />";
+			endif;
 			?>
 		</p>
 		<a class="one-hundred-wiki-link" href="<?php echo $params['wiki']['url']; ?>" title="<?php echo $params['wiki']['title']; ?>">Wikipedia</a>	

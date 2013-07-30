@@ -5,7 +5,7 @@ License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Requires at least: 2.5
 Tested up to: 3.5.1
-Stable tag: 1.3
+Stable tag: 1.4
 
 Add great content to your posts automatically: just choose a city and get a map, photos, data, and related articles. Very useful for travel bloggers!
 
@@ -23,11 +23,12 @@ If you have suggestions for a new feature, feel free to email me at jonaypelluz@
 1. Upload "100-cities" folder to the '/wp-content/plugins/' directory
 2. Activate the plugin through the 'Plugins' menu in WordPress
 3. Place "wp_cityinfo('location-name', 'language');" inside php tags in any of your templates. Default language is English (at the moment it is the only language we support.)
-4. Also you can place "[onehundredcities location='location-name' mapzoom='8' lang='eng/esp/ita' panoramiocount='3' div='block/float' wiki='on/off' gmaps='on/off' panoramio='on/off' articles='on/off' logo='on/off']" in any post or page. If the attribute is on, you don't need to add it, it will use the value by default.
-5. Also you can use the widget and place it on your widgets area. You may need to modify the default css to adjust the plugin for that area.
-6. In the Dashboard you have an admin panel to control values by default.
-7. If you want to use tags and category listings, you need to add wp_meta() to the sidebar, where you want the plugin to be printed.
-8. '/wp-content/plugins/100-cities/cache' folder needs write permissions, so the plugin will save data there and this reduces the quantity of resources that uses it.
+4. Also you can place "[onehundredcities location='location-name' mapzoom='8' weather='on/off' lang='eng/esp/ita' panoramiocount='3' div='block/float' wiki='on/off' gmaps='on/off' panoramio='on/off' articles='on/off' logo='on/off']" in any post or page. If the attribute is on, you don't need to add it, it will use the value by default.
+5. The location name must be written as it appears in the Wikipedia URL without "_".
+6. Also you can use the widget and place it on your widgets area. You may need to modify the default css to adjust the plugin for that area.
+7. In the Dashboard you have an admin panel to control values by default.
+8. If you want to use tags and category listings, you need to add wp_meta() to the sidebar, where you want the plugin to be printed.
+9. '/wp-content/plugins/100-cities/cache' folder needs write permissions, so the plugin will save data there and this reduces the quantity of resources that uses it.
 
 == Frequently Asked Questions ==
 
@@ -60,3 +61,9 @@ This will occur the first time you publish a post (as the plugin is accumulating
 * Add param to control map zoom out
 * Change main functions so in a future we could add more languages
 * Add more FAQ
+
+= 1.4 =
+* Add weather information to the cities
+* Add more regular expressions to fix some errors
+
+

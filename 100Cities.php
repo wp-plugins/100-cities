@@ -145,19 +145,17 @@
 				return $keep_key_assoc ? $array : array_values($array);
 			}
 			
-			function get_photos_panoramio( $location, $count ){
+			function get_photos_panoramio( $geo, $location, $count ){
 				if($count == false){
 					$count = $this->default_panoramio_photos;
 				}
 				$file_name = "panoramio_" . $count . "_" . strtolower(str_replace(" ","-",$location)) . ".log";
 				$data = $this->get_cache_data($file_name);
 				if(!$data){
-					$gmap_url = "http://maps.googleapis.com/maps/api/geocode/json?address=" . urlencode($location) . "&sensor=false";
-					$json = json_decode(file_get_contents($gmap_url), true);
-					if( isset($json['results'][0]['geometry']['location']['lat'])){
+					if(!empty($geo)){
 						$radius = 0.045;	
-						$geoLat = $json['results'][0]['geometry']['location']['lat'];	
-						$geoLng = $json['results'][0]['geometry']['location']['lng'];	
+						$geoLat = $geo['lat'];	
+						$geoLng = $geo['lng'];	
 						$panoramio_url = "http://www.panoramio.com/map/get_panoramas.php?set=public&from=0&to=" . $count . "&minx=" . ( $geoLng - $radius ) . "&miny=" . ( $geoLat - $radius ) . "&maxx=" . ( $geoLng + $radius ) . "&maxy=" . ( $geoLat + $radius ) . "&size=small&mapfilter=true";
 						$panoramio = json_decode(file_get_contents($panoramio_url), true);
 						$data = $panoramio['photos'];
@@ -201,9 +199,10 @@
 				return $data;
 			}
 			
-			function get_cache_data($file_name) {
+			function get_cache_data($file_name, $time = false) {
+				if(!$time){ $time = 60*60*24*2; }
 				$file_url = $this->plugin_path . "/cache/" . $file_name;
-				if (file_exists($file_url) && ((time()-filemtime($file_url)) < (60*60*24*2))){
+				if (file_exists($file_url) && ((time()-filemtime($file_url)) < $time)){
 					$str = file_get_contents($file_url);
 					return unserialize($str);
 				}
@@ -248,6 +247,11 @@
 				} else {
 					$atts['logo'] = $this->data->logo;
 				}
+				if(!isset($atts['weather']) && $atts['weather'] == 'off'){
+					$atts['weather'] = 0;
+				} else {
+					$atts['weather'] = $this->data->weather;
+				}
 				if(!isset($atts['mapzoom'])){
 					$atts['mapzoom'] = $this->map_zoom;
 				}
@@ -265,8 +269,25 @@
 				}
 			}
 			
+			function get_geo_location($location){
+				$geo_file_name = "geo_" . strtolower(str_replace(" ","-",$location)) . ".log";
+				$data = $this->get_cache_data($geo_file_name);
+				if(empty($data)){
+					$data = array();
+					$gmap_url = "http://maps.googleapis.com/maps/api/geocode/json?address=" . urlencode($location) . "&sensor=false";
+					$json = json_decode(file_get_contents($gmap_url), true);
+					if(isset($json['results'][0]['geometry']['location']['lat'])){
+						$data['lat'] = $json['results'][0]['geometry']['location']['lat'];
+						$data['lng'] = $json['results'][0]['geometry']['location']['lng'];
+						$this->write_cache($data, $geo_file_name);
+					}
+				}
+				return $data;
+			}
+			
 			function get_city_info( $params ){
-				$data['location'] = $params['location'];
+				$data['geo'] = $this->get_geo_location( $params['location'] );
+				$data['location'] = $params['location'];				
 				$data['div'] = $params['div'];
 				if($params['wiki'] == 1){
 					$data['wiki'] = $this->get_wikipedia_info( $params['lang'], $params['location'] );
@@ -290,11 +311,14 @@
 					}
 					$data['location_title'] = __("Related posts","onehundredcities");
 				}
-				if($params['panoramio'] == 1){
-					$data['panoramio_photos'] = $this->get_photos_panoramio( $params['location'], $params['panoramiocount']);
+				if($params['panoramio'] == 1 && !empty($data['geo'])){
+					$data['panoramio_photos'] = $this->get_photos_panoramio( $data['geo'], $params['location'], $params['panoramiocount']);
 				}
 				if($params['logo'] == 1){
 					$data['logo'] = $this->get_own_info();
+				}
+				if($params['weather'] == 1){
+					$data['weather'] = $this->get_weather($data['geo'], $params['location']);
 				}
 				if(!empty($data)){
 					$template = $this->load_template( $this->plugin_path . '/templates/' . $this->basic_template, $data );
@@ -303,12 +327,37 @@
 				return false;
 			}
 			
+			function get_weather($geo, $location){
+				$file_name = "weather_" . strtolower(str_replace(" ","-",$location)) . ".log";
+				$time = 60*60*24;
+				$data = $this->get_cache_data($file_name, $time);
+				if(empty($data) && !empty($geo)){
+					$data = array();
+					$url = "http://api.openweathermap.org/data/2.5/forecast/daily?lat=" . $geo['lat'] . "&lon=" . $geo['lng'];
+					$params = json_decode($this->curl_url($url));
+					$data['weather-desc'] = $params->list[0]->weather[0]->description;
+					$data['wind-speed'] = $this->ms_to_kmh(intval($params->list[0]->speed)) . " km/h";
+					$data['humidity'] = $params->list[0]->humidity . "% Humidity";
+					$data['temperature'] = $this->kelvin_to_celsius(intval($params->list[0]->temp->day)) . "°C";
+					$this->write_cache($data, $file_name);
+				}
+				return $data;
+			}
+			
+			function ms_to_kmh( $ms ){
+				return $ms*3.6;
+			}
+			
 			function get_own_info(){
 				//Default for all
 				$data['title'] = __("Home exchange","onehundredcities") . " | Knok";
 				$data['link'] = __("Home-link","onehundredcities");
 				$data['img'] = $this->plugin_url . "/assets/logo-knok.png";
 				return $data;
+			}
+			
+			function kelvin_to_celsius( $kelvin ){
+				return $kelvin - 273.15;
 			}
 			
 			function install(){
@@ -322,6 +371,7 @@
 				$data['logo'] = 1;
 				$data['div'] = 'float';
 				$data['css'] = 1;
+				$data['weather'] = 1;
 				update_option('one-hundred-cities-data', json_encode($data));
 			}
 			
@@ -400,8 +450,8 @@
 					}
 					
 					//Final string cleaning, it is when we get the data from wikipedia
-					$searches = array('/=/','/\|/','/\n/','/\s\s+/');
-					$replacements = array(' = ',' ',' ',' ');
+					$searches = array("/=/","/\|/","/\n/","/'''?/","/\s\s+/");
+					$replacements = array(' = ',' ',' ',' ',' ');
 					
 					//English wikipedia
 					$array_names['eng'] = array(
@@ -428,7 +478,7 @@
 					$data = array();
 					foreach($results_filtered as $param){
 						if(strlen($param) < 200 &&  strpos($param, "=") && $param != ""){
-							$param = trim(preg_replace($searches, $replacements, $param));	
+							$param = trim(preg_replace($searches, $replacements, $param));
 							$i = 0;
 							foreach($array_names[$lng] as $nm => $val){
 								$pos = strpos($param, $nm);
@@ -506,7 +556,7 @@
 	
 	add_action( 'init', 'init_one_hundred_cities');
 	function init_one_hundred_cities(){
-		if(class_exists("OneHundredCities") && !$OneHundredCities){
+		if(class_exists("OneHundredCities") && !isset($OneHundredCities)){
 			$OneHundredCities = new OneHundredCities();	
 		}
 	}
