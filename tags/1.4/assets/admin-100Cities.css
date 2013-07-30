@@ -1,0 +1,12 @@
+
+.cities-form fieldset { padding: 10px; border: 1px solid #d9d9d9; width: 400px; margin-bottom: 20px; margin-right: 10px; float:left; }
+.cities-form label { display:block; clear: both; margin-bottom: 10px; }
+.cities-form label.cities-subheader { font-size: 14px; padding-bottom: 3px; border-bottom: 1px dotted #d9d9d9; margin-bottom: 10px; display:block; }
+.cities-form .long_input { width: 300px; }
+.cities-form .normal_input { width: 130px; }
+.cities-form input[type=submit] { clear: both; display:block; }
+.cities-header  { margin-bottom: 40px; font-weight: 400; }
+.cities-header .icon32 { float:none; display: inline-block; position:relative; top: 8px; }
+.cities-alert { padding: 5px 10px; background-color: #DFF0D8; border:1px solid #D6E9C6; color: #468847; margin-bottom: 20px; width: 400px; }
+.cities-right-css, .cities-first-fieldset { min-height: 280px; }
+.cities-right-css textarea { width: 378px; height: 200px; }
