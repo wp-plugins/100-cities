@@ -1,28 +1,28 @@
 <?php
 	/*
 		Plugin Name: 100Cities
-		Plugin URI: http://www.knok.com/100-cities/
+		Plugin URI: http://www.knok.com/
 		Text Domain: onehundredcities
 		Description: a plugin to show the one of the 100 cities to home swap before you die
 		Version: 1.0
 		Author: Jonay Pelluz
 		Author URI: http://www.jonaypelluz.com
 		License: GPL2
-	
-			Copyright 2013  Jonay Pelluz  (email : jonaypelluz@gmail.com)
 
-			This program is free software; you can redistribute it and/or modify
-			it under the terms of the GNU General Public License, version 2, as 
-			published by the Free Software Foundation.
+		Copyright 2015 Jonay Pelluz  (email : jonaypelluz@gmail.com)
 
-			This program is distributed in the hope that it will be useful,
-			but WITHOUT ANY WARRANTY; without even the implied warranty of
-			MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-			GNU General Public License for more details.
+		This program is free software; you can redistribute it and/or modify
+		it under the terms of the GNU General Public License, version 2, as 
+		published by the Free Software Foundation.
 
-			You should have received a copy of the GNU General Public License
-			along with this program; if not, write to the Free Software
-			Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+		This program is distributed in the hope that it will be useful,
+		but WITHOUT ANY WARRANTY; without even the implied warranty of
+		MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+		GNU General Public License for more details.
+
+		You should have received a copy of the GNU General Public License
+		along with this program; if not, write to the Free Software
+		Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 	*/
 	
 	if (!function_exists('is_admin')) {
@@ -301,6 +301,7 @@
 					$data['zoom'] = $params['mapzoom'];
 				}
 				if($params['articles'] == 1){
+					/*
 					if($params['articles_feed'] != ""){
 						$data['location_url'] = "";
 						$data['location_post'] = $this->get_data_by_location( $params['location'], $params['lang'], $params['articles_feed'] );
@@ -310,6 +311,7 @@
 						$data['location_name'] = __("more posts about","onehundredcities") . " " . $params['location'] . " &raquo;";
 					}
 					$data['location_title'] = __("Related posts","onehundredcities");
+					*/
 				}
 				if($params['panoramio'] == 1 && !empty($data['geo'])){
 					$data['panoramio_photos'] = $this->get_photos_panoramio( $data['geo'], $params['location'], $params['panoramiocount']);
@@ -338,7 +340,7 @@
 					$data['weather-desc'] = $params->list[0]->weather[0]->description;
 					$data['wind-speed'] = $this->ms_to_kmh(intval($params->list[0]->speed)) . " km/h";
 					$data['humidity'] = $params->list[0]->humidity . "% Humidity";
-					$data['temperature'] = $this->kelvin_to_celsius(intval($params->list[0]->temp->day)) . "Â°C";
+					$data['temperature'] = $this->kelvin_to_celsius(intval($params->list[0]->temp->day)) . "°C";
 					$this->write_cache($data, $file_name);
 				}
 				return $data;
@@ -472,7 +474,7 @@
 					//Spanish wikipedia
 					$array_names['esp'] = array(
 						 'superficie =' => 'area'
-						,'poblaciÃ³n =' => 'population'
+						,'población =' => 'population'
 					);
 					
 					$data = array();
