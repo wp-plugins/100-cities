@@ -100,6 +100,6 @@
 	<?php endif; ?>
 	
 	<?php if(isset($params['logo'])): ?>
-		<a class="one-hundred-logo" target="_blank" href="<?php echo $params['logo']['link']; ?>" title="<?php echo $params['logo']['title']; ?>"><?php _e("created by ","onehundredcities") ?><img src="<?php echo $params['logo']['img']; ?>" alt="<?php echo $params['logo']['title']; ?>" /></a>
+		<a class="one-hundred-logo" target="_blank" href="<?php echo $params['logo']['link']; ?>" title="<?php echo $params['logo']['title']; ?>"><?php _e("created by ","onehundredcities") ?> Knok</a>
 	<?php endif; ?>
 </div>
