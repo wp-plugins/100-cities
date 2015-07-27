@@ -1,15 +1,15 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: 100 Cities\n"
-"POT-Creation-Date: 2013-07-11 13:36+0100\n"
-"PO-Revision-Date: 2013-07-11 13:36+0100\n"
+"POT-Creation-Date: 2015-07-27 10:03+0100\n"
+"PO-Revision-Date: 2015-07-27 10:03+0100\n"
 "Last-Translator: Jonay <jonaypelluz@gmail.com>\n"
 "Language-Team: Jonay <jonaypelluz@gmail.com>\n"
-"Language: English\n"
+"Language: en\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 1.5.5\n"
+"X-Generator: Poedit 1.6.4\n"
 "X-Poedit-KeywordsList: _;gettext;gettext_noop;__;_e\n"
 "X-Poedit-Basepath: .\n"
 "X-Poedit-SourceCharset: UTF-8\n"
@@ -17,93 +17,71 @@ msgstr ""
 "X-Poedit-SearchPath-0: .\n"
 "X-Poedit-SearchPath-1: ..\n"
 
-#: ../100Cities-options.php:123
+#: ../100Cities-options.php:96
 msgid "100 Cities Admin Panel"
 msgstr "100 Cities Admin Panel"
 
-#: ../100Cities-options.php:124
+#: ../100Cities-options.php:97
 msgid "100 Cities data updated"
 msgstr "100 Cities data updated"
 
-#: ../100Cities-options.php:126
+#: ../100Cities-options.php:99
 msgid "Elements to show"
 msgstr "Elements to show (default)"
 
-#: ../100Cities-options.php:127
+#: ../100Cities-options.php:100
 msgid "Google map"
 msgstr "Google map"
 
-#: ../100Cities-options.php:128
+#: ../100Cities-options.php:101
 msgid "Wikipedia description"
 msgstr "Wikipedia description"
 
-#: ../100Cities-options.php:129
+#: ../100Cities-options.php:102
 msgid "Panoramio photos"
 msgstr "Panoramio photos"
 
-#: ../100Cities-options.php:130 ../100Cities.php:312
-msgid "Related posts"
-msgstr "Related posts"
+#: ../100Cities-options.php:103 ../100Cities.php:311
+msgid "Offers"
+msgstr "Offers"
 
-#: ../100Cities-options.php:131
-msgid "Weather info"
-msgstr "Weather info"
-
-#: ../100Cities-options.php:133
-msgid "Related posts feed"
-msgstr "Related posts custom feed url (rss)"
-
-#: ../100Cities-options.php:137
+#: ../100Cities-options.php:105
 msgid "Div type"
 msgstr ""
 "Div type <br /><small>(extend to the full width of the container of the "
 "article area or float to one side and it gets wrap by text)</small>"
 
-#: ../100Cities-options.php:145
-msgid "Use default CSS"
-msgstr "Use default CSS"
-
-#: ../100Cities-options.php:146
-msgid "Edit CSS"
-msgstr ""
-"Edit CSS <br /><small>(DO NOT modify if you don't know CSS or it can cause "
-"they whole blog to stop working properly)</small>"
-
-#: ../100Cities-options.php:151
+#: ../100Cities-options.php:114
 msgid "Show plugin"
 msgstr "Show plugin on"
 
-#: ../100Cities-options.php:152
+#: ../100Cities-options.php:115
 msgid "Dinamic sidebars has to be actived for this to work"
 msgstr "Dinamic sidebars has to be actived for this to work"
 
-#: ../100Cities-options.php:153
+#: ../100Cities-options.php:116
 msgid "It needs"
 msgstr "It needs"
 
-#: ../100Cities-options.php:153
+#: ../100Cities-options.php:116
 msgid "on the sidebar"
 msgstr "on the sidebar"
 
-#: ../100Cities-options.php:155
+#: ../100Cities-options.php:118
 msgid "Tag pages"
 msgstr "Tag pages"
 
-#: ../100Cities-options.php:159
+#: ../100Cities-options.php:122
 msgid "Add our logo"
 msgstr "Add our logo"
 
-#: ../100Cities-options.php:160
+#: ../100Cities-options.php:123
 msgid "Keep our link, Thanks!"
 msgstr "Keep our link, Thanks!"
 
-#: ../100Cities-options.php:162
+#: ../100Cities-options.php:125
 msgid "Save Options"
 msgstr "Save Options"
-
-#: ../100Cities.php:310
-msgid "more posts about"
-msgstr "more posts about"
 
 #: ../100Cities.php:353
 msgid "Home exchange"
@@ -113,15 +91,15 @@ msgstr "Home exchange"
 msgid "Home-link"
 msgstr "http://www.knok.com"
 
-#: ../100Cities.php:491
+#: ../100Cities.php:493
 msgid "Area"
 msgstr "Area"
 
-#: ../100Cities.php:503
+#: ../100Cities.php:505
 msgid "Population"
 msgstr "Population"
 
-#: ../100Cities.php:510
+#: ../100Cities.php:512
 msgid "Settled"
 msgstr "Settled"
 
@@ -140,6 +118,26 @@ msgstr "by"
 #: ../templates/100Cities_basic.php:103
 msgid "created by "
 msgstr "created by "
+
+#~ msgid "Related posts"
+#~ msgstr "Related posts"
+
+#~ msgid "Weather info"
+#~ msgstr "Weather info"
+
+#~ msgid "Related posts feed"
+#~ msgstr "Related posts custom feed url (rss)"
+
+#~ msgid "Use default CSS"
+#~ msgstr "Use default CSS"
+
+#~ msgid "Edit CSS"
+#~ msgstr ""
+#~ "Edit CSS <br /><small>(DO NOT modify if you don't know CSS or it can "
+#~ "cause they whole blog to stop working properly)</small>"
+
+#~ msgid "more posts about"
+#~ msgstr "more posts about"
 
 #~ msgid "Category pages"
 #~ msgstr "Category pages"

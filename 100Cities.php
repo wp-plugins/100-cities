@@ -49,7 +49,6 @@
 
 		class OneHundredCities {
 			protected $options_page,$plugin_path,$plugin_url;
-			protected $feed_url = "http://www.knok.com/100-cities/tag/"; //You can change this for your own feed base by location
 			protected $data; //We get options store data, we control this data from the admin page;
 			protected $default_lang = "eng"; //You default language, if it isn't set by the widget or include the plugin uses this one
 			protected $default_panoramio_photos = 3; //Default quantity of panoramio photos to get
@@ -166,17 +165,13 @@
 				}
 				return $data;
 			}
-			
+
 			//Get related posts for a given location
 			function get_data_by_location( $location, $lng, $custom_feed ){
 				$file_name = "articles_" . strtolower(str_replace(" ","-",$location)) . "_" . $lng . ".log";
 				$data = $this->get_cache_data($file_name);
 				if(!$data){
-					if(isset($custom_feed) && $custom_feed != false){
-						$url = $custom_feed;
-					} else {
-						$url = $this->feed_url . str_replace(" ", "-", strtolower($location)) . "/feed/";
-					}
+					$url = $custom_feed;
 					if($this->check_rss_exists($url)){
 						$doc = new DOMDocument();
 						$doc->load($url);
@@ -237,10 +232,10 @@
 				} else {
 					$atts['panoramio'] = $this->data->panoramio;
 				}
-				if(isset($atts['articles']) && $atts['articles'] == 'off'){ 
-					$atts['articles'] = 0;
+				if(isset($atts['offers']) && $atts['offers'] == 'off'){ 
+					$atts['offers'] = 0;
 				} else {
-					$atts['articles'] = $this->data->articles;
+					$atts['offers'] = $this->data->offers;
 				}
 				if(isset($atts['logo']) && $atts['logo'] == 'off'){ 
 					$atts['logo'] = 0;
@@ -261,7 +256,6 @@
 				if(!isset($atts['lang'])){
 					$atts['lang'] = $this->default_lang; //Default lang is English
 				}
-				$atts['articles_feed'] =  $this->data->articles_feed;
 				if(isset($atts['location'])){
 					return $this->get_city_info( $atts );
 				} else {
@@ -300,18 +294,22 @@
 					}
 					$data['zoom'] = $params['mapzoom'];
 				}
-				if($params['articles'] == 1){
-					/*
-					if($params['articles_feed'] != ""){
-						$data['location_url'] = "";
-						$data['location_post'] = $this->get_data_by_location( $params['location'], $params['lang'], $params['articles_feed'] );
-					} else {
-						$data['location_url'] = $this->feed_url . str_replace(" ", "-", strtolower($params['location'])) . "/";
-						$data['location_post'] = $this->get_data_by_location( $params['location'], $params['lang'], false );
-						$data['location_name'] = __("more posts about","onehundredcities") . " " . $params['location'] . " &raquo;";
+				if($params['offers'] == 1){
+					$file_url = $this->plugin_path . "/assets/offers.data";
+					if (file_exists($file_url)){
+						$offers = json_decode(file_get_contents($file_url));
 					}
-					$data['location_title'] = __("Related posts","onehundredcities");
-					*/
+					foreach($offers as $offer){
+						if($offer->city == str_replace(array('_','-'), array(' ',' '), $params['location'])){
+							$offer_data = $offer;
+							break;
+						}
+					}
+					if(isset($offer_data) && !empty($offer_data)){
+						$data['offers_url'] = $offer_data->link;
+						$data['offers_more'] = $offer_data->title . " &raquo;";
+						$data['offers_title'] = __("Offers","onehundredcities");
+					}
 				}
 				if($params['panoramio'] == 1 && !empty($data['geo'])){
 					$data['panoramio_photos'] = $this->get_photos_panoramio( $data['geo'], $params['location'], $params['panoramiocount']);
@@ -340,7 +338,7 @@
 					$data['weather-desc'] = $params->list[0]->weather[0]->description;
 					$data['wind-speed'] = $this->ms_to_kmh(intval($params->list[0]->speed)) . " km/h";
 					$data['humidity'] = $params->list[0]->humidity . "% Humidity";
-					$data['temperature'] = $this->kelvin_to_celsius(intval($params->list[0]->temp->day)) . "°C";
+					$data['temperature'] = $this->kelvin_to_celsius(intval($params->list[0]->temp->day)) . "&deg;C";
 					$this->write_cache($data, $file_name);
 				}
 				return $data;
@@ -366,8 +364,7 @@
 				$data['gmaps'] = 1;
 				$data['wikipedia'] = 1;
 				$data['panoramio'] = 1;
-				$data['articles'] = 1;
-				$data['articles_feed'] = '';
+				$data['offers'] = 1;
 				$data['tags'] = 0;
 				$data['categories'] = 0;
 				$data['logo'] = 1;
@@ -389,7 +386,7 @@
 			
 			function curl_url($url){
 				$data = false;
-				if(function_exists('curl_init')){
+				/*if(function_exists('curl_init')){
 					$ch = curl_init($url);
 					curl_setopt($ch, CURLOPT_HTTPGET, true);
 					curl_setopt($ch, CURLOPT_POST, false);
@@ -402,141 +399,145 @@
 					curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 					curl_setopt($ch, CURLOPT_USERAGENT, "Mozilla/5.0 (Windows; U; Windows NT 6.1; he; rv:1.9.2.8) Gecko/20100722 Firefox/3.6.8");
 					$data = curl_exec($ch);
-				} else {
+				*/
+				//} else {
 					$data = file_get_contents($url);
-				}
+				//}
 				return $data;
 			}
 			
 			function get_wikipedia_info( $lng, $location ) {
-				$file_name = "wiki_" . strtolower(str_replace(" ","-",$location)) . "_" . $lng . ".log";
-				$data = $this->get_cache_data($file_name);
+				$file_name = "wiki_" . str_replace(" ","-",$location) . "_" . $lng . ".log";
+				//$data = $this->get_cache_data($file_name);
 				if(!$data){
 					$lng_array = array( 
 						"eng" => "en", 
 						"esp" => "es" 
 					);
-					$page = json_decode($this->curl_url("http://" . $lng_array[$lng] . ".wikipedia.org/w/api.php?action=query&indexpageids=&prop=revisions&titles=" . urlencode($location) ."&rvprop=content&format=json"));
-					foreach($page->query->pageids as $result){
-						$pageid = $result;
-						break;
-					}
-					$object_name = '*';
-					$wiki_content = $page->query->pages->$pageid->revisions[0]->$object_name; //We call it unestable, but it it is beyond that :-)
-					
-					//Cleaning wiki content
-					$results = array();
-					$searches = array(
-						'/<ref(.*)?>(.*)?<\/ref>/'
-						,'/<small(.*)?>(.*)?<\/small>/'
-						,'/<\/?ref\s?(.*)?\s?\/?>/'
-						,'/\((.*)\)/'
-						,'/{(.*)}/'
-						,'/\[(.*)\]/'
-						,'/<!--(.*)-->/'
-					);
-					$wiki_content = preg_replace($searches, ' ' ,$wiki_content);
-					preg_match_all('/\|(.*)=(.*)/', $wiki_content, $results, PREG_SET_ORDER);
-					
-					//Filtering cleaner results
-					$results_filtered = array();
-					foreach($results as $result){
-						if(substr_count($result[0],'|') > 1){
-							$rs = explode('|',$result[0]);
-							foreach($rs as $rs_s){
-								array_push($results_filtered, $rs_s);
-							}
-						} else {
-							array_push($results_filtered, $result[0]);							
+					$_url = "http://" . $lng_array[$lng] . ".wikipedia.org/w/api.php?action=query&indexpageids=&prop=revisions&titles=" . urlencode($location) ."&rvprop=content&format=json";
+					$page = json_decode($this->curl_url($_url));
+					if($page->query->pageids){
+						foreach($page->query->pageids as $result){
+							$pageid = $result;
+							break;
 						}
-					}
+						$object_name = '*';
+						$wiki_content = $page->query->pages->$pageid->revisions[0]->$object_name; //We call it unestable, but it is beyond that :-)
+						
+						//Cleaning wiki content
+						$results = array();
+						$searches = array(
+							'/<ref(.*)?>(.*)?<\/ref>/'
+							,'/<small(.*)?>(.*)?<\/small>/'
+							,'/<\/?ref\s?(.*)?\s?\/?>/'
+							,'/\((.*)\)/'
+							,'/{(.*)}/'
+							,'/\[(.*)\]/'
+							,'/<!--(.*)-->/'
+						);
+						$wiki_content = preg_replace($searches, ' ' ,$wiki_content);
+						preg_match_all('/\|(.*)=(.*)/', $wiki_content, $results, PREG_SET_ORDER);
 					
-					//Final string cleaning, it is when we get the data from wikipedia
-					$searches = array("/=/","/\|/","/\n/","/'''?/","/\s\s+/");
-					$replacements = array(' = ',' ',' ',' ',' ');
+						//Filtering cleaner results
+						$results_filtered = array();
+						foreach($results as $result){
+							if(substr_count($result[0],'|') > 1){
+								$rs = explode('|',$result[0]);
+								foreach($rs as $rs_s){
+									array_push($results_filtered, $rs_s);
+								}
+							} else {
+								array_push($results_filtered, $result[0]);							
+							}
+						}
 					
-					//English wikipedia
-					$array_names['eng'] = array(
-						 'area_total_sq_mi =' => 'area'
-						,'area_total_km2 = ' => 'area'
-						,'population_est =' => 'population'
-						,'population_total =' => 'population'
-						,'established_date =' => 'settled'
-						,'TotalAreaUS =' => 'area'
-						,'2000Pop =' => 'population'
-						,'area_km2 =' => 'area'
-						,'population_estimate =' => 'population'
-						,'area km2 =' => 'area'
-						,'population =' => 'population'
-						,'2010Pop =' => 'population'
-					);
+						//Final string cleaning, it is when we get the data from wikipedia
+						$searches = array("/=/","/\|/","/\n/","/'''?/","/\s\s+/");
+						$replacements = array(' = ',' ',' ',' ',' ');
+
+						//English wikipedia
+						$array_names['eng'] = array(
+							 'area_total_sq_mi =' => 'area'
+							,'area_total_km2 = ' => 'area'
+							,'population_est =' => 'population'
+							,'population_total =' => 'population'
+							,'established_date =' => 'settled'
+							,'TotalAreaUS =' => 'area'
+							,'2000Pop =' => 'population'
+							,'area_km2 =' => 'area'
+							,'population_estimate =' => 'population'
+							,'area km2 =' => 'area'
+							,'population =' => 'population'
+							,'2010Pop =' => 'population'
+						);
 					
-					//Spanish wikipedia
-					$array_names['esp'] = array(
-						 'superficie =' => 'area'
-						,'población =' => 'population'
-					);
-					
-					$data = array();
-					foreach($results_filtered as $param){
-						if(strlen($param) < 200 &&  strpos($param, "=") && $param != ""){
-							$param = trim(preg_replace($searches, $replacements, $param));
-							$i = 0;
-							foreach($array_names[$lng] as $nm => $val){
-								$pos = strpos($param, $nm);
-								if($pos !== false){
-									$param = trim(str_replace($nm, "", substr($param, $pos, strlen($param))));
-									if(strlen($param) > 2){
-										switch($val){
-											case 'area':
-												if(!isset($area_done)){
-													$param = '<b>' . __("Area","onehundredcities") . ':</b> ' . $param;
-													if(($i == 0 || $i == 5) && $lng == 'eng'){
-														$param .= ' sq mi';
-													} else {
-														$param .= ' km2';
+						//Spanish wikipedia
+						$array_names['esp'] = array(
+							 'superficie =' => 'area'
+							,'poblaciÃ³n =' => 'population'
+						);
+						
+						$data = array();
+						foreach($results_filtered as $param){
+							if(strlen($param) < 200 &&  strpos($param, "=") && $param != ""){
+								$param = trim(preg_replace($searches, $replacements, $param));
+								$i = 0;
+								foreach($array_names[$lng] as $nm => $val){
+									$pos = strpos($param, $nm);
+									if($pos !== false){
+										$param = trim(str_replace($nm, "", substr($param, $pos, strlen($param))));
+										if(strlen($param) > 2){
+											switch($val){
+												case 'area':
+													if(!isset($area_done)){
+														$param = '<b>' . __("Area","onehundredcities") . ':</b> ' . $param;
+														if(($i == 0 || $i == 5) && $lng == 'eng'){
+															$param .= ' sq mi';
+														} else {
+															$param .= ' km2';
+														}
+														array_push($data, $param);
+														$area_done = true;
 													}
-													array_push($data, $param);
-													$area_done = true;
-												}
-												break;
-											case 'population':
-												if(!isset($population_done)){
-													$param = '<b>' . __("Population","onehundredcities") . ':</b> ' . $param;
-													array_push($data, $param);
-													$population_done = true;
-												}
-												break;
-											case 'settled':
-												if(!isset($settled_done)){
-													$param = '<b>' . __("Settled","onehundredcities") . ':</b> ' . $param;
-													array_push($data, $param);
-													$settled_done = true;
-												}
-												break;
+													break;
+												case 'population':
+													if(!isset($population_done)){
+														$param = '<b>' . __("Population","onehundredcities") . ':</b> ' . $param;
+														array_push($data, $param);
+														$population_done = true;
+													}
+													break;
+												case 'settled':
+													if(!isset($settled_done)){
+														$param = '<b>' . __("Settled","onehundredcities") . ':</b> ' . $param;
+														array_push($data, $param);
+														$settled_done = true;
+													}
+													break;
+											}
 										}
 									}
+									$i++;
 								}
-								$i++;
 							}
 						}
-					}
 					
-					$new_page = $this->curl_url("http://" . $lng_array[$lng] . ".wikipedia.org/w/api.php?action=opensearch&search=" . urlencode($location) ."&format=xml&limit=1");
-					$xml = simplexml_load_string($new_page);
-					$description = (string) preg_replace('/\([^)]*\)/s', '', $xml->Section->Item->Description);
-					$description = preg_replace('/\s\s+/s', ' ', $description);
-					$new_data = array(
-						'title' => (string) $xml->Section->Item->Text, 
-						'description' => $description, 
-						'url' => (string) $xml->Section->Item->Url,
-						'extra' => $data
-					);
-					if((string)$xml->Section->Item->Description) {
-						$this->write_cache($new_data, $file_name);
-						return $new_data;
-					} else {
-						return "";
+						$new_page = $this->curl_url("http://" . $lng_array[$lng] . ".wikipedia.org/w/api.php?action=opensearch&search=" . urlencode($location) ."&format=xml&limit=1");
+						$xml = simplexml_load_string($new_page);
+						$description = (string) preg_replace('/\([^)]*\)/s', '', $xml->Section->Item->Description);
+						$description = preg_replace('/\s\s+/s', ' ', $description);
+						$new_data = array(
+							'title' => (string) $xml->Section->Item->Text, 
+							'description' => $description, 
+							'url' => (string) $xml->Section->Item->Url,
+							'extra' => $data
+						);
+						if((string) $xml->Section->Item->Description) {
+							$this->write_cache($new_data, $file_name);
+							return $new_data;
+						} else {
+							return "";
+						}
 					}
 				} else {
 					return $data;
