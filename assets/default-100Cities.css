@@ -1,0 +1,215 @@
+.cities-clx:after {
+    content: " ";
+    display: block;
+    clear: both;
+    visibility: hidden;
+    line-height: 0;
+    height: 0;
+}
+
+html[xmlns] .cities-clx {
+    display: block;
+}
+
+* html .cities-clx {
+    height: 1%;
+}
+
+.one-hundred-cities-box {
+    background-color: #fff;
+    border: 1px solid #d9d9d9;
+    margin: 10px 0;
+    display: block;
+    font: 15px/22px 'Archivo Narrow', Arial, sans-serif;
+    overflow: hidden;
+}
+
+.one-hundred-cities-box p, .post .one-hundred-cities-box p {
+    color: #7f7f7f;
+}
+
+.one-hundred-cities-box.cities-float {
+    min-width: 280px;
+    max-width: 280px;
+    padding: 10px;
+    margin-left: 10px;
+    float: right;
+    margin-bottom: 10px;
+}
+
+.one-hundred-cities-box.cities-block {
+    display: block;
+    clear: both;
+    padding: 10px;
+}
+
+.one-hundred-cities-box.cities-block .one-hundred-cities-map img {
+    width: 100%;
+}
+
+.one-hundred-cities-map {
+    margin-bottom: 5px;
+    overflow:hidden;
+}
+
+.one-hundred-cities-title, .post p.one-hundred-cities-title {
+    font: 22px/24px 'Archivo Narrow', Arial, sans-serif !important;
+    padding: 0 10px;
+    color: #000;
+    margin-bottom: 5px;
+}
+
+.one-hundred-cities-description, .post p.one-hundred-cities-description {
+    padding: 0 10px;
+    margin: 0;
+    font: 15px/22px 'Archivo Narrow', Arial, sans-serif !important;
+}
+
+.one-hundred-cities-description b {
+    font-weight: 400;
+    color: #000;
+}
+
+.one-hundred-wiki-link {
+    font: 13px/17px 'Archivo Narrow', Arial, sans-serif !important;
+    color: #c2c2c2;
+    padding: 0 10px 10px;
+    display: block;
+    text-align: right;
+    border-bottom: 0 !important;
+}
+
+.one-hundred-wiki-link:hover {
+    text-decoration: underline;
+    border-bottom: 0 !important;
+}
+
+.one-hundred-cities-photos {
+    background-color: #e4e4e4;
+    padding: 0 10px;
+    list-style: none;
+    margin: 0;
+    -moz-border-radius: 4px;
+    -webkit-border-radius: 4px;
+    border-radius: 4px;
+}
+
+.one-hundred-cities-box.cities-block .one-hundred-cities-photos {
+    -moz-border-radius: 6px;
+    -webkit-border-radius: 6px;
+    border-radius: 6px;
+}
+
+.one-hundred-cities-photos a {
+    color: #9da0a7;
+    border-bottom: 0 !important;
+}
+
+.panoramio-photo {
+    float: left;
+    text-align: center;
+    width: 72px;
+    padding: 7px;
+}
+
+.panoramio-photo:hover {
+    background-color: #9da0a7;
+}
+
+.panoramio-photo:hover a {
+    color: #fff;
+    text-decoration: none;
+    border-bottom: 0 none;
+}
+
+.panoramio-photo.no-margin-right {
+    margin-right: 0;
+}
+
+.panoramio-photo img {
+    padding: 1px;
+    background-color: #fff;
+    border: 1px solid #d9d9d9;
+}
+
+.panoramio-author {
+    font-size: 13px;
+    clear: both;
+    display: block;
+    line-height: 17px;
+}
+
+.panoramio-logo {
+    clear: both;
+    margin-top: 10px;
+}
+
+/* Related Articles */
+.one-hundred-cities-link {
+    padding: 10px;
+    font-amily: 'Archivo Narrow', Arial, sans-serif !important;
+}
+
+.one-hundred-link-main-title, .post p.one-hundred-link-main-title {
+    font-size: 22px;
+    line-height: 24px;
+    padding: 0;
+    margin: 0;
+    color: #000;
+}
+
+.one-hundred-link-more {
+    font-size: 13px;
+    line-height: 17px;
+    display: block;
+    clear: both;
+    margin-bottom: 10px;
+    color: #e22526;
+}
+
+.one-hundred-link-more a {
+	border-bottom: 0 none !important;
+}
+
+.one-hundred-link-title {
+    font-size: 15px;
+    line-height: 22px;
+    font-weight: 400;
+    color: #e22526;
+}
+
+.one-hundred-link-date {
+    font-size: 13px;
+    line-height: 17px;
+    color: #fff;
+    background-color: #9da0a7;
+    clear: both;
+    display: block;
+    padding: 1px;
+    margin-bottom: 5px;
+    width: 80px;
+    text-align: center;
+    -moz-border-radius: 4px;
+    -webkit-border-radius: 4px;
+    border-radius: 4px;
+}
+
+.one-hundred-link-desc {
+    font-size: 15px;
+    line-height: 22px;
+    line-height: 14px;
+}
+
+.one-hundred-logo {
+    float: right;
+    font: 11px/15px 'Archivo Narrow', Arial, sans-serif !important;
+    padding: 0 10px 10px 0;
+    text-decoration: none;
+    color: #ccc;
+    border-bottom: 0 none !important;
+}
+
+.one-hundred-logo img {
+    position: relative;
+    top: 4px;
+}  

@@ -1,0 +1,146 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: 100 Cities\n"
+"POT-Creation-Date: 2015-07-24 13:18+0100\n"
+"PO-Revision-Date: 2015-07-24 13:18+0100\n"
+"Last-Translator: Jonay <jonaypelluz@gmail.com>\n"
+"Language-Team: Jonay <jonaypelluz@gmail.com>\n"
+"Language: en\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 1.6.4\n"
+"X-Poedit-KeywordsList: _;gettext;gettext_noop;__;_e\n"
+"X-Poedit-Basepath: .\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\\n;\n"
+"X-Poedit-SearchPath-0: .\n"
+"X-Poedit-SearchPath-1: ..\n"
+
+#: ../100Cities-options.php:110
+msgid "100 Cities Admin Panel"
+msgstr "100 Cities Admin Panel"
+
+#: ../100Cities-options.php:111
+msgid "100 Cities data updated"
+msgstr "100 Cities data updated"
+
+#: ../100Cities-options.php:113
+msgid "Elements to show"
+msgstr "Elements to show (default)"
+
+#: ../100Cities-options.php:114
+msgid "Google map"
+msgstr "Google map"
+
+#: ../100Cities-options.php:115
+msgid "Wikipedia description"
+msgstr "Wikipedia description"
+
+#: ../100Cities-options.php:116
+msgid "Panoramio photos"
+msgstr "Panoramio photos"
+
+#: ../100Cities-options.php:117 ../100Cities.php:317
+msgid "Offers"
+msgstr "Offers"
+
+#: ../100Cities-options.php:125
+msgid "Div type"
+msgstr ""
+"Div type <br /><small>(extend to the full width of the container of the "
+"article area or float to one side and it gets wrap by text)</small>"
+
+#: ../100Cities-options.php:134
+msgid "Show plugin"
+msgstr "Show plugin on"
+
+#: ../100Cities-options.php:135
+msgid "Dinamic sidebars has to be actived for this to work"
+msgstr "Dinamic sidebars has to be actived for this to work"
+
+#: ../100Cities-options.php:136
+msgid "It needs"
+msgstr "It needs"
+
+#: ../100Cities-options.php:136
+msgid "on the sidebar"
+msgstr "on the sidebar"
+
+#: ../100Cities-options.php:138
+msgid "Tag pages"
+msgstr "Tag pages"
+
+#: ../100Cities-options.php:142
+msgid "Add our logo"
+msgstr "Add our logo"
+
+#: ../100Cities-options.php:143
+msgid "Keep our link, Thanks!"
+msgstr "Keep our link, Thanks!"
+
+#: ../100Cities-options.php:145
+msgid "Save Options"
+msgstr "Save Options"
+
+#: ../100Cities.php:359
+msgid "Home exchange"
+msgstr "Home exchange"
+
+#: ../100Cities.php:360
+msgid "Home-link"
+msgstr "http://www.knok.com"
+
+#: ../100Cities.php:499
+msgid "Area"
+msgstr "Area"
+
+#: ../100Cities.php:511
+msgid "Population"
+msgstr "Population"
+
+#: ../100Cities.php:518
+msgid "Settled"
+msgstr "Settled"
+
+#: ../templates/100Cities_basic.php:41
+msgid "Weather"
+msgstr "Weather"
+
+#: ../templates/100Cities_basic.php:46
+msgid "Wind at"
+msgstr "Wind at"
+
+#: ../templates/100Cities_basic.php:80
+msgid "by"
+msgstr "by"
+
+#: ../templates/100Cities_basic.php:100
+msgid "created by "
+msgstr "created by "
+
+#~ msgid "Related posts"
+#~ msgstr "Hotel offers"
+
+#~ msgid "Weather info"
+#~ msgstr "Weather info"
+
+#~ msgid "Related posts feed"
+#~ msgstr "Related posts custom feed url (rss)"
+
+#~ msgid "Use default CSS"
+#~ msgstr "Use default CSS"
+
+#~ msgid "Edit CSS"
+#~ msgstr ""
+#~ "Edit CSS <br /><small>(DO NOT modify if you don't know CSS or it can "
+#~ "cause they whole blog to stop working properly)</small>"
+
+#~ msgid "more posts about"
+#~ msgstr "more offers for"
+
+#~ msgid "Category pages"
+#~ msgstr "Category pages"
+
+#~ msgid "Related Articles"
+#~ msgstr "Related Articles"
